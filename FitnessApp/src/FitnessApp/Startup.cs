@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -37,6 +34,16 @@ namespace FitnessApp
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc();
+
+            var connection = @"Server=localhost\SQLEXPRESS;Database=FITNESS_APP;Integrated Security=True;MultipleActiveResultSets=True;";
+            services.AddDbContext<FitnessAppContext>(options => options.UseSqlServer(connection));
+
+            //Add application services
+            //Repo Services
+            //later
+
+            //Logic services
+            //later
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
