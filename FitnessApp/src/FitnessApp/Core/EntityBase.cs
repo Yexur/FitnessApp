@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace FitnessApp.Core
 {
-    public class EntityBase
+    public class EntityBase : IEntity
     {
         [Key]
         public int Id { get; set; }
