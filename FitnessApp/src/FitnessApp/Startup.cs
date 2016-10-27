@@ -1,12 +1,18 @@
-﻿using FitnessApp.IRepository;
-using FitnessApp.Logic;
-using FitnessApp.Repository;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FitnessApp.Data;
+using FitnessApp.Models;
+using FitnessApp.Services;
+using FitnessApp.Logic;
 
 namespace FitnessApp
 {
@@ -17,14 +23,18 @@ namespace FitnessApp
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
+                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                builder.AddUserSecrets();
+
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
+
+            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -36,25 +46,21 @@ namespace FitnessApp
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            var connection = @"Server=localhost\SQLEXPRESS;Database=FITNESS_APP;Integrated Security=True;MultipleActiveResultSets=True;";
+            services.AddDbContext<FitnessAppDbContext>(options => options.UseSqlServer(connection));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<FitnessAppDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddMvc();
 
-            var connection = @"Server=localhost\SQLEXPRESS;Database=FITNESS_APP;Integrated Security=True;MultipleActiveResultSets=True;";
-            services.AddDbContext<FitnessAppContext>(options => options.UseSqlServer(connection));
-
-            //Add application services
-            //Repo Services  
-            services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<IInstructorRepository, InstructorRepository>();
-            services.AddTransient<IRegistrationRecordRepository, RegistrationRecordRepository>();
-            services.AddTransient<IFitnessClassRepository, FitnessClassRepository>();
-            services.AddTransient<IFitnessClassTypeRepository, FitnessClassTypeRepository>();
+            // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
 
             //Logic services
-            services.AddTransient<ILocationLogic, LocationLogic>();
-            services.AddTransient<IInstructorLogic, InstructorLogic>();
-            services.AddTransient<IRegistrationRecordLogic, RegistrationRecordLogic>();
             services.AddTransient<IFitnessClassLogic, FitnessClassLogic>();
-            services.AddTransient<IFitnessClassTypeLogic, FitnessClassTypeLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +74,7 @@ namespace FitnessApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
             }
             else
@@ -78,6 +85,10 @@ namespace FitnessApp
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
+
+            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
             {

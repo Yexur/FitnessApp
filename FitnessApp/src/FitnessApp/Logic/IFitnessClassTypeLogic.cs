@@ -1,4 +1,4 @@
-﻿using FitnessApp.Models;
+﻿using ApplicationModels.FitnessApp.Models;
 using System.Linq;
 
 namespace FitnessApp.Logic

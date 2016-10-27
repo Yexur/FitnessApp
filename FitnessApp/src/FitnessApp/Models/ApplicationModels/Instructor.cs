@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace FitnessApp.Models
+namespace ApplicationModels.FitnessApp.Models
 {
-    public class Location : EntityBase
+    public class Instructor : EntityBase
     {
         private ICollection<FitnessClass> _fitnessClass;
 

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using FitnessApp.IRepository;
-using FitnessApp.Models;
+using ApplicationModels.FitnessApp.Models;
 
 namespace FitnessApp.Logic
 {

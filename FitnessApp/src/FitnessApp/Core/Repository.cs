@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FitnessApp.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,12 @@ namespace FitnessApp.Core
     {
         protected DbSet<TEntity> DbSet { get; private set; }
 
-        protected FitnessAppContext FitnessAppContext { get; private set; }
+        protected FitnessAppDbContext FitnessAppDbContext { get; private set; }
 
-        public Repository(FitnessAppContext context)
+        public Repository(FitnessAppDbContext context)
         {
-            FitnessAppContext = context;
-            DbSet = FitnessAppContext.Set<TEntity>();
+            FitnessAppDbContext = context;
+            DbSet = FitnessAppDbContext.Set<TEntity>();
         }
 
         public virtual IQueryable<TEntity> All(params Expression<Func<TEntity, object>>[] entitiesToInclude)
@@ -34,8 +35,7 @@ namespace FitnessApp.Core
             }
             else
             {
-                //update to the entity
-                FitnessAppContext.Entry(entity).State = EntityState.Modified;
+                FitnessAppDbContext.Entry(entity).State = EntityState.Modified;
             }
 
             SaveChange();
@@ -80,8 +80,7 @@ namespace FitnessApp.Core
 
         private void SaveChange()
         {
-            //todo: later this needs to be turned into a unit of work
-            FitnessAppContext.SaveChanges();
+            FitnessAppDbContext.SaveChanges();
         }
     }
 }

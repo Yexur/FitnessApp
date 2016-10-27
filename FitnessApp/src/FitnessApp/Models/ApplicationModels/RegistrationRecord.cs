@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
-namespace FitnessApp.Models
+namespace ApplicationModels.FitnessApp.Models
 {
     public class RegistrationRecord : EntityBase
     {
