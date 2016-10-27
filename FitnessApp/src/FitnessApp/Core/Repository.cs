@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace FitnessApp.Core
 {
@@ -20,10 +21,10 @@ namespace FitnessApp.Core
             DbSet = FitnessAppDbContext.Set<TEntity>();
         }
 
-        public virtual IQueryable<TEntity> All(params Expression<Func<TEntity, object>>[] entitiesToInclude)
+        public virtual async Task<List<TEntity>> All(params Expression<Func<TEntity, object>>[] entitiesToInclude)
         {
-            return entitiesToInclude.Aggregate((IQueryable<TEntity>)DbSet,
-                (current, entityToInclude) => current.Include(entityToInclude));
+            return await entitiesToInclude.Aggregate((IQueryable<TEntity>)DbSet,
+                (current, entityToInclude) => current.Include(entityToInclude)).ToListAsync();
         }
 
         public virtual void Insert(TEntity entity)

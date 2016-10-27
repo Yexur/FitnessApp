@@ -32,7 +32,7 @@ namespace FitnessApp.Logic
                 return Enumerable.Empty<FitnessClassListItem>().ToList();
             }
 
-            return GetFitnessClassListItems(fitnessClasses);
+            return MapFitnessClassToFitnessClassListItem(fitnessClasses);
         }
 
         //public void Save(FitnessClass fitnessClass)
@@ -45,7 +45,7 @@ namespace FitnessApp.Logic
         //    _fitnessClassRepository.Delete(id);
         //}
 
-        private List<FitnessClassListItem> GetFitnessClassListItems(List<FitnessClass> fitnessClasses) {
+        private List<FitnessClassListItem> MapFitnessClassToFitnessClassListItem(List<FitnessClass> fitnessClasses) {
             List<FitnessClassListItem> fitnessClassListItems = new List<FitnessClassListItem>();
 
             foreach (var item in fitnessClasses)

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace FitnessApp.Core
 {
     public interface IRepository<TEntity>
         where TEntity : class, IEntity
     {
-        IQueryable<TEntity> All(params Expression<Func<TEntity, object>>[] entitiesToInclude);
+        Task<List<TEntity>> All(params Expression<Func<TEntity, object>>[] entitiesToInclude);
         void Insert(TEntity entity);
         void InsertRange(IEnumerable<TEntity> entities);
         void Delete(TEntity entity);
