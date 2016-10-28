@@ -1,12 +1,13 @@
 ﻿using ApplicationModels.FitnessApp.Models;
-using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FitnessApp.Logic
 {
     public interface IInstructorLogic
     {
-        Instructor Get(int id);
-        IQueryable<Instructor> GetList();
+        Task<Instructor> Get(int id);
+        Task<List<Instructor>> GetList();
         void Save(Instructor instructor);
         void Delete(int id);
     }

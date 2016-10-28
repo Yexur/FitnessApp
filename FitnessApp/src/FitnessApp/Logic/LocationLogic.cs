@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using FitnessApp.IRepository;
 using ApplicationModels.FitnessApp.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace FitnessApp.Logic
 {
@@ -13,18 +15,18 @@ namespace FitnessApp.Logic
             _locationRepository = locationRepository;
         }
 
-        public Location Get(int id)
+        public async Task<Location> Get(int id)
         {
-            return _locationRepository.FindById(id);
+            return await _locationRepository.FindById(id);
         }
 
-        public IQueryable<Location> GetList()
+        public async Task<List<Location>> GetList()
         {
-            var locations = _locationRepository.All();
+            var locations = await _locationRepository.All();
 
             if (locations == null || !locations.Any())
             {
-                return Enumerable.Empty<Location>().AsQueryable();
+                return Enumerable.Empty<Location>().ToList();
             }
 
             return locations;
