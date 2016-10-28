@@ -27,7 +27,7 @@ namespace FitnessApp.Core
                 (current, entityToInclude) => current.Include(entityToInclude)).ToListAsync();
         }
 
-        public virtual void Insert(TEntity entity)
+        public virtual async void Insert(TEntity entity)
         {
             if (entity.Id <= 0)
             {
@@ -39,49 +39,30 @@ namespace FitnessApp.Core
                 FitnessAppDbContext.Entry(entity).State = EntityState.Modified;
             }
 
-            SaveChange();
+            await FitnessAppDbContext.SaveChangesAsync();
         }
 
-        public virtual void InsertRange(IEnumerable<TEntity> entities)
+        public virtual async void Delete(int id)
         {
-            foreach (var entity in entities)
-            {
-                Insert(entity);
-            }
-            SaveChange();
-        }
-
-        public virtual void Delete(int id)
-        {
-            var entity = FindById(id);
+            var entity = await FindById(id);
             if (entity != null)
             {
-                Delete(entity);
+                DbSet.Remove(entity);
+                await FitnessAppDbContext.SaveChangesAsync();
             }
-            SaveChange();
         }
 
-        public virtual void Delete(TEntity entity)
+        public virtual async Task<TEntity> FindById(int id, params Expression<Func<TEntity, object>>[] entitiesToInclude)
         {
-            DbSet.Remove(entity);
-            SaveChange();
+            var  entity = await Find(x => x.Id == id, entitiesToInclude);
+            return entity.SingleOrDefault();
         }
 
-        public virtual TEntity FindById(int id, params Expression<Func<TEntity, object>>[] entitiesToInclude)
-        {
-            return Find(x => x.Id == id, entitiesToInclude).FirstOrDefault();
-        }
-
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate,
+        public async Task<List<TEntity>> Find(Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, object>>[] entitiesToInclude)
         {
-            return entitiesToInclude.Aggregate(DbSet.Where(predicate),
-                (current, entityToInclude) => current.Include(entityToInclude));
-        }
-
-        private void SaveChange()
-        {
-            FitnessAppDbContext.SaveChanges();
+            return await entitiesToInclude.Aggregate(DbSet.Where(predicate),
+                (current, entityToInclude) => current.Include(entityToInclude)).ToListAsync();
         }
     }
 }
