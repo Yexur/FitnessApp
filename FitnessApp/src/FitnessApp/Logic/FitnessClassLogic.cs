@@ -1,6 +1,5 @@
 ﻿using ApplicationModels.FitnessApp.Models;
-using FitnessApp.Data;
-using Microsoft.EntityFrameworkCore;
+using FitnessApp.IRepository;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,43 +8,41 @@ namespace FitnessApp.Logic
 {
     public class FitnessClassLogic : IFitnessClassLogic
     {
-        private readonly FitnessAppDbContext _context;
+        private readonly IFitnessClassRepository _fitnessClassRepository;
 
-        public FitnessClassLogic(FitnessAppDbContext context)
+        public FitnessClassLogic(IFitnessClassRepository fitnessClassRepository)
         {
-            _context = context;
+            _fitnessClassRepository = fitnessClassRepository;
         }
 
-        //public FitnessClass Get(int id)
-        //{
-        //    return _fitnessClassRepository.FindById(id);
-        //}
-
-        public async Task<List<FitnessClassListItem>> GetList()  // add the repositoryy layer
+        public async Task<FitnessClass> Get(int id)
         {
-            var fitnessClasses = await _context.FitnessClass.Include(f => f.Instructor)
-                                                            .Include(t => t.Location)
-                                                            .Include(m => m.FitnessClassType).ToListAsync();
+            return await _fitnessClassRepository.FindById(id);
+        }
+
+        public async Task<List<FitnessClassListItem>> GetList()
+        {
+            var fitnessClasses = await _fitnessClassRepository.All();
 
             if (fitnessClasses == null || !fitnessClasses.Any())
             {
                 return Enumerable.Empty<FitnessClassListItem>().ToList();
             }
 
-            return GetFitnessClassListItems(fitnessClasses);
+            return MapFitnessClassToFitnessClassListItem(fitnessClasses);
         }
 
-        //public void Save(FitnessClass fitnessClass)
-        //{
-        //    _fitnessClassRepository.Insert(fitnessClass);
-        //}
+        public void Save(FitnessClass fitnessClass)
+        {
+            _fitnessClassRepository.Insert(fitnessClass);
+        }
 
-        //public void Delete(int id)
-        //{
-        //    _fitnessClassRepository.Delete(id);
-        //}
+        public void Delete(int id)
+        {
+            _fitnessClassRepository.Delete(id);
+        }
 
-        private List<FitnessClassListItem> GetFitnessClassListItems(List<FitnessClass> fitnessClasses) {
+        private List<FitnessClassListItem> MapFitnessClassToFitnessClassListItem(List<FitnessClass> fitnessClasses) {
             List<FitnessClassListItem> fitnessClassListItems = new List<FitnessClassListItem>();
 
             foreach (var item in fitnessClasses)
