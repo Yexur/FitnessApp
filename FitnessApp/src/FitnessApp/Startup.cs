@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +9,8 @@ using FitnessApp.Data;
 using FitnessApp.Models;
 using FitnessApp.Services;
 using FitnessApp.Logic;
+using FitnessApp.Repository;
+using FitnessApp.IRepository;
 
 namespace FitnessApp
 {
@@ -59,8 +57,19 @@ namespace FitnessApp
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
+            //Repository Services
+            services.AddTransient<IFitnessClassRepository, FitnessClassRepository>();
+            services.AddTransient<IFitnessClassTypeRepository, FitnessClassTypeRepository>();
+            services.AddTransient<IInstructorRepository, InstructorRepository>();
+            services.AddTransient<ILocationRepository, LocationRepository>();
+            services.AddTransient<IRegistrationRecordRepository, RegistrationRecordRepository>();
+
             //Logic services
             services.AddTransient<IFitnessClassLogic, FitnessClassLogic>();
+            services.AddTransient<IFitnessClassTypeLogic, FitnessClassTypeLogic>();
+            services.AddTransient<IInstructorLogic, InstructorLogic>();
+            services.AddTransient<ILocationLogic, LocationLogic>();
+            services.AddTransient<IRegistrationRecordLogic, RegistrationRecordLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
