@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using ApplicationModels.FitnessApp.Models;
 using FitnessApp.IRepository;
-using FitnessApp.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FitnessApp.Logic
 {
@@ -13,21 +15,21 @@ namespace FitnessApp.Logic
             _fitnessClassRepository = fitnessClassRepository;
         }
 
-        public FitnessClass Get(int id)
+        public async Task<FitnessClass> Get(int id)
         {
-            return _fitnessClassRepository.FindById(id);
+            return await _fitnessClassRepository.FindById(id);
         }
 
-        public IQueryable<FitnessClass> GetList()
+        public async Task<List<FitnessClassListItem>> GetList()
         {
-            var fitnessClasses = _fitnessClassRepository.All();
+            var fitnessClasses = await _fitnessClassRepository.All();
 
             if (fitnessClasses == null || !fitnessClasses.Any())
             {
-                return Enumerable.Empty<FitnessClass>().AsQueryable();
+                return Enumerable.Empty<FitnessClassListItem>().ToList();
             }
 
-            return fitnessClasses;
+            return MapFitnessClassToFitnessClassListItem(fitnessClasses);
         }
 
         public void Save(FitnessClass fitnessClass)
@@ -38,6 +40,27 @@ namespace FitnessApp.Logic
         public void Delete(int id)
         {
             _fitnessClassRepository.Delete(id);
+        }
+
+        private List<FitnessClassListItem> MapFitnessClassToFitnessClassListItem(List<FitnessClass> fitnessClasses) {
+            List<FitnessClassListItem> fitnessClassListItems = new List<FitnessClassListItem>();
+
+            foreach (var item in fitnessClasses)
+            {
+                fitnessClassListItems.Add(new FitnessClassListItem()
+                {
+                    Id = item.Id,
+                    Capacity = item.Capacity,
+                    StartTime = item.StartTime,
+                    EndTime = item.EndTime,
+                    DateOfClass = item.DateOfClass,
+                    Status = item.Status,
+                    ClassType = item.FitnessClassType.Id.ToString(),  //needs to be a call to get the name
+                    Instructor = item.Instructor.Id.ToString(), //needs to be a call to get the name
+                    Location = item.Location.Id.ToString() //needs to be a call to get the name
+                });
+            }
+            return fitnessClassListItems;
         }
     }
 }

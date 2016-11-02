@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using FitnessApp.IRepository;
-using FitnessApp.Models;
+using ApplicationModels.FitnessApp.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace FitnessApp.Logic
 {
@@ -13,18 +15,18 @@ namespace FitnessApp.Logic
             _fitnessClassTypeRepository = fitnessClassTypeRepository;
         }
 
-        public FitnessClassType Get(int id)
+        public async Task<FitnessClassType> Get(int id)
         {
-            return _fitnessClassTypeRepository.FindById(id);
+            return await _fitnessClassTypeRepository.FindById(id);
         }
 
-        public IQueryable<FitnessClassType> GetList()
+        public async Task<List<FitnessClassType>> GetList()
         {
-            var fitnessClassesType = _fitnessClassTypeRepository.All();
+            var fitnessClassesType = await _fitnessClassTypeRepository.All();
 
             if (fitnessClassesType == null || !fitnessClassesType.Any())
             {
-                return Enumerable.Empty<FitnessClassType> ().AsQueryable();
+                return Enumerable.Empty<FitnessClassType> ().ToList();
             }
 
             return fitnessClassesType;

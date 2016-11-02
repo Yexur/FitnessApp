@@ -1,5 +1,5 @@
-﻿using FitnessApp.Core;
-using FitnessApp.Models;
+﻿using ApplicationModels.FitnessApp.Models;
+using FitnessApp.Core;
 
 namespace FitnessApp.IRepository
 {

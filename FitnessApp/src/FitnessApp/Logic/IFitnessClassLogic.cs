@@ -1,12 +1,13 @@
-﻿using FitnessApp.Models;
-using System.Linq;
+﻿using ApplicationModels.FitnessApp.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FitnessApp.Logic
 {
     public interface IFitnessClassLogic
     {
-        FitnessClass Get(int id);
-        IQueryable<FitnessClass> GetList();
+        Task<FitnessClass> Get(int id);
+        Task<List<FitnessClassListItem>>GetList();
         void Save(FitnessClass fitnessClass);
         void Delete(int id);
     }

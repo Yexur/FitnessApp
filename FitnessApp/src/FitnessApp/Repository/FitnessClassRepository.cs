@@ -1,12 +1,13 @@
 ﻿using FitnessApp.IRepository;
-using FitnessApp.Models;
 using FitnessApp.Core;
+using ApplicationModels.FitnessApp.Models;
+using FitnessApp.Data;
 
 namespace FitnessApp.Repository
 {
     public class FitnessClassRepository : Repository<FitnessClass>, IFitnessClassRepository
     {
-        public FitnessClassRepository(FitnessAppContext context) : base(context)
+        public FitnessClassRepository(FitnessAppDbContext context) : base(context)
         {
         }
     }

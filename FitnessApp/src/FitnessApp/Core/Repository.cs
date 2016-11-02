@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FitnessApp.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace FitnessApp.Core
 {
@@ -11,21 +13,21 @@ namespace FitnessApp.Core
     {
         protected DbSet<TEntity> DbSet { get; private set; }
 
-        protected FitnessAppContext FitnessAppContext { get; private set; }
+        protected FitnessAppDbContext FitnessAppDbContext { get; private set; }
 
-        public Repository(FitnessAppContext context)
+        public Repository(FitnessAppDbContext context)
         {
-            FitnessAppContext = context;
-            DbSet = FitnessAppContext.Set<TEntity>();
+            FitnessAppDbContext = context;
+            DbSet = FitnessAppDbContext.Set<TEntity>();
         }
 
-        public virtual IQueryable<TEntity> All(params Expression<Func<TEntity, object>>[] entitiesToInclude)
+        public virtual async Task<List<TEntity>> All(params Expression<Func<TEntity, object>>[] entitiesToInclude)
         {
-            return entitiesToInclude.Aggregate((IQueryable<TEntity>)DbSet,
-                (current, entityToInclude) => current.Include(entityToInclude));
+            return await entitiesToInclude.Aggregate((IQueryable<TEntity>)DbSet,
+                (current, entityToInclude) => current.Include(entityToInclude)).ToListAsync();
         }
 
-        public virtual void Insert(TEntity entity)
+        public virtual async void Insert(TEntity entity)
         {
             if (entity.Id <= 0)
             {
@@ -34,54 +36,33 @@ namespace FitnessApp.Core
             }
             else
             {
-                //update to the entity
-                FitnessAppContext.Entry(entity).State = EntityState.Modified;
+                FitnessAppDbContext.Entry(entity).State = EntityState.Modified;
             }
 
-            SaveChange();
+            await FitnessAppDbContext.SaveChangesAsync();
         }
 
-        public virtual void InsertRange(IEnumerable<TEntity> entities)
+        public virtual async void Delete(int id)
         {
-            foreach (var entity in entities)
-            {
-                Insert(entity);
-            }
-            SaveChange();
-        }
-
-        public virtual void Delete(int id)
-        {
-            var entity = FindById(id);
+            var entity = await FindById(id);
             if (entity != null)
             {
-                Delete(entity);
+                DbSet.Remove(entity);
+                await FitnessAppDbContext.SaveChangesAsync();
             }
-            SaveChange();
         }
 
-        public virtual void Delete(TEntity entity)
+        public virtual async Task<TEntity> FindById(int id, params Expression<Func<TEntity, object>>[] entitiesToInclude)
         {
-            DbSet.Remove(entity);
-            SaveChange();
+            var  entity = await Find(x => x.Id == id, entitiesToInclude);
+            return entity.SingleOrDefault();
         }
 
-        public virtual TEntity FindById(int id, params Expression<Func<TEntity, object>>[] entitiesToInclude)
-        {
-            return Find(x => x.Id == id, entitiesToInclude).FirstOrDefault();
-        }
-
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate,
+        public async Task<List<TEntity>> Find(Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, object>>[] entitiesToInclude)
         {
-            return entitiesToInclude.Aggregate(DbSet.Where(predicate),
-                (current, entityToInclude) => current.Include(entityToInclude));
-        }
-
-        private void SaveChange()
-        {
-            //todo: later this needs to be turned into a unit of work
-            FitnessAppContext.SaveChanges();
+            return await entitiesToInclude.Aggregate(DbSet.Where(predicate),
+                (current, entityToInclude) => current.Include(entityToInclude)).ToListAsync();
         }
     }
 }
