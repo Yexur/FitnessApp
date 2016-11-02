@@ -7,19 +7,12 @@ namespace ApplicationModels.FitnessApp.Models
 {
     public class RegistrationRecord : EntityBase
     {
-        [DataMember]
-        [Required]
         public string Name { get; set; }
-
-        [DataMember]
-        [Required]
         public string Email { get; set; }
-
-        [DataMember]
-        [Required]
         public bool WaitListed { get; set; }
 
-        [ForeignKey("FitnessClass_Id")]
-        public virtual FitnessClass FitnessClass { get; set; }
+
+        public int FitnessClass_Id { get; set; }
+        public FitnessClass FitnessClass { get; set; }
     }
 }

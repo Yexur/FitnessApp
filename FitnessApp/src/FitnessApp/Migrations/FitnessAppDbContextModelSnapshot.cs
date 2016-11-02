@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using FitnessApp.Data;
 
-namespace FitnessApp.Data.Migrations
+namespace FitnessApp.Migrations
 {
     [DbContext(typeof(FitnessAppDbContext))]
     partial class FitnessAppDbContextModelSnapshot : ModelSnapshot
@@ -30,11 +30,11 @@ namespace FitnessApp.Data.Migrations
                     b.Property<string>("EndTime")
                         .IsRequired();
 
-                    b.Property<int?>("FitnessClassType_Id");
+                    b.Property<int>("FitnessClassType_Id");
 
-                    b.Property<int?>("Instructors_Id");
+                    b.Property<int>("Instructors_Id");
 
-                    b.Property<int?>("Locations_Id");
+                    b.Property<int>("Location_Id");
 
                     b.Property<string>("StartTime")
                         .IsRequired();
@@ -49,7 +49,7 @@ namespace FitnessApp.Data.Migrations
 
                     b.HasIndex("Instructors_Id");
 
-                    b.HasIndex("Locations_Id");
+                    b.HasIndex("Location_Id");
 
                     b.ToTable("FitnessClass");
                 });
@@ -117,7 +117,7 @@ namespace FitnessApp.Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<int?>("FitnessClass_Id");
+                    b.Property<int>("FitnessClass_Id");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -292,23 +292,27 @@ namespace FitnessApp.Data.Migrations
             modelBuilder.Entity("ApplicationModels.FitnessApp.Models.FitnessClass", b =>
                 {
                     b.HasOne("ApplicationModels.FitnessApp.Models.FitnessClassType", "FitnessClassType")
-                        .WithMany("FitnessClass")
-                        .HasForeignKey("FitnessClassType_Id");
+                        .WithMany("FitnessClasses")
+                        .HasForeignKey("FitnessClassType_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ApplicationModels.FitnessApp.Models.Instructor", "Instructor")
-                        .WithMany("FitnessClass")
-                        .HasForeignKey("Instructors_Id");
+                        .WithMany("FitnessClasses")
+                        .HasForeignKey("Instructors_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ApplicationModels.FitnessApp.Models.Location", "Location")
-                        .WithMany("FitnessClass")
-                        .HasForeignKey("Locations_Id");
+                        .WithMany("FitnessClasses")
+                        .HasForeignKey("Location_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ApplicationModels.FitnessApp.Models.RegistrationRecord", b =>
                 {
                     b.HasOne("ApplicationModels.FitnessApp.Models.FitnessClass", "FitnessClass")
                         .WithMany("RegistrationRecords")
-                        .HasForeignKey("FitnessClass_Id");
+                        .HasForeignKey("FitnessClass_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
