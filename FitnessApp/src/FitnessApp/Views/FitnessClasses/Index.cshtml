@@ -1,10 +1,10 @@
-@model IEnumerable<ApplicationModels.FitnessApp.Models.FitnessClassListItem>
+@model IEnumerable<ApplicationModels.FitnessApp.Models.FitnessClass>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Current Fitness Classes";
 }
 
-<h2>Index</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ClassType)
+                @Html.DisplayNameFor(model => model.FitnessClassType.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StartTime)
@@ -28,10 +28,10 @@
                 @Html.DisplayNameFor(model => model.Capacity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Instructor)
+                @Html.DisplayNameFor(model => model.Instructor.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                @Html.DisplayNameFor(model => model.Location.Name)
             </th>
             <th></th>
         </tr>
@@ -40,7 +40,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ClassType)
+                @Html.DisplayFor(modelItem => item.FitnessClassType.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StartTime)
@@ -55,10 +55,10 @@
                 @Html.DisplayFor(modelItem => item.Capacity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Instructor)
+                @Html.DisplayFor(modelItem => item.Instructor.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location)
+                @Html.DisplayFor(modelItem => item.Location.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
