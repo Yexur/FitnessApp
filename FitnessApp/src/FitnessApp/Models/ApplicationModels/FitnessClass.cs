@@ -1,7 +1,6 @@
 ﻿using FitnessApp.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationModels.FitnessApp.Models
@@ -15,8 +14,10 @@ namespace ApplicationModels.FitnessApp.Models
         public string EndTime { get; set; }
 
         [Display(Name = "Class Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime DateOfClass { get; set; }
 
+        [Display(Name = "Active")]
         public bool Status { get; set; }
 
         [Display(Name = "Capacity")]
