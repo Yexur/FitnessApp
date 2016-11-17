@@ -103,7 +103,7 @@ namespace FitnessApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=FitnessClasses}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
