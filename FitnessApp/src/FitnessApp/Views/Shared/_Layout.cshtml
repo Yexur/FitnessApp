@@ -7,14 +7,14 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootswatch/united/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/lib/bootswatch/yeti/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="~/lib/bootswatch/united/bootstrap.min.css"/>
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
@@ -27,9 +27,8 @@
             <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
         </ul>
     </div>
-
     <div id="wrapper">
-        <nav class="navbar navbar-inverse">
+        <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <a asp-controller="FitnessClasses" asp-action="Index" class="navbar-brand">Fitness Classes</a>
                 @await Html.PartialAsync("_LoginPartial")
@@ -41,7 +40,7 @@
             </div>
         </div>
         <div id="footer" class="container-fluid">
-            <div class="navbar navbar-inverse navbar-fixed-bottom">
+            <div class="navbar navbar-default navbar-fixed-bottom">
                 <footer>
                     <p class="text-center text-info">&copy; 2016 - Fitness Class Application</p>
                 </footer>
