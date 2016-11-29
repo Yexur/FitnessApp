@@ -33,26 +33,26 @@ namespace FitnessApp.Controllers
         }
 
         // GET: FitnessClasses/Create
-        //    public IActionResult Create()
-        //    {
-        //        return View();
-        //    }
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-        //    // POST: FitnessClasses/Create
-        //    // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //    // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public async Task<IActionResult> Create([Bind("Id,Capacity,Created,DateOfClass,EndTime,StartTime,Status,Updated")] FitnessClass fitnessClass)
+        // POST: FitnessClasses/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Capacity,Created,DateOfClass,EndTime,StartTime,Status,Updated")] FitnessClass fitnessClass)
+        //{
+        //    if (ModelState.IsValid)
         //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            _context.Add(fitnessClass);
-        //            await _context.SaveChangesAsync();
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(fitnessClass);
+        //        _context.Add(fitnessClass);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("Index");
         //    }
+        //    return View(fitnessClass);
+        //}
 
         // GET: FitnessClasses/Edit/5
         public async Task<IActionResult> Edit(int id)
