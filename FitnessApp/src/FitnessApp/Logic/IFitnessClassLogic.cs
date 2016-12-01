@@ -6,7 +6,7 @@ namespace FitnessApp.Logic
 {
     public interface IFitnessClassLogic
     {
-        Task<FitnessClass> FindById(int id);
+        FitnessClass FindById(int id);
         bool FitnessClassExists(int id);
         Task<List<FitnessClass>>GetList();
         Task Save(FitnessClass fitnessClass);

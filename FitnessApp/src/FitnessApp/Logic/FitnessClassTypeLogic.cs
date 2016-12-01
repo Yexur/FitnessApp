@@ -15,9 +15,9 @@ namespace FitnessApp.Logic
             _fitnessClassTypeRepository = fitnessClassTypeRepository;
         }
 
-        public async Task<FitnessClassType> Get(int id)
+        public FitnessClassType FindById(int id)
         {
-            return await _fitnessClassTypeRepository.FindById(id);
+            return _fitnessClassTypeRepository.FindById(id);
         }
 
         public async Task<List<FitnessClassType>> GetList()
@@ -28,13 +28,12 @@ namespace FitnessApp.Logic
             {
                 return Enumerable.Empty<FitnessClassType> ().ToList();
             }
-
             return fitnessClassesType;
         }
 
-        public void Save(FitnessClassType fitnessClassType)
+        public async Task Save(FitnessClassType fitnessClassType)
         {
-            _fitnessClassTypeRepository.Insert(fitnessClassType);
+            await _fitnessClassTypeRepository.Insert(fitnessClassType);
         }
 
         public void Delete(int id)

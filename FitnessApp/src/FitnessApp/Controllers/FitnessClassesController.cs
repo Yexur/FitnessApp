@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using FitnessApp.Logic;
 using ApplicationModels.FitnessApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace FitnessApp.Controllers
 {
@@ -127,5 +129,6 @@ namespace FitnessApp.Controllers
         //        await _context.SaveChangesAsync();
         //        return RedirectToAction("Index");
         //    }
+
     }
 }

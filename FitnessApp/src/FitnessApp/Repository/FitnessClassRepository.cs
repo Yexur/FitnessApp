@@ -1,5 +1,4 @@
 ﻿using FitnessApp.IRepository;
-using FitnessApp.Core;
 using ApplicationModels.FitnessApp.Models;
 using FitnessApp.Data;
 using System;
@@ -20,9 +19,10 @@ namespace FitnessApp.Repository
 
         public async Task<List<FitnessClass>> All()
         {
-            return await _context.FitnessClass.Include(f => f.FitnessClassType)
-                                            .Include(t => t.Instructor)
-                                            .Include(l => l.Location).ToListAsync();
+            return await _context.FitnessClass
+                .Include(f => f.FitnessClassType)
+                .Include(t => t.Instructor)
+                .Include(l => l.Location).ToListAsync();
         }
 
         public void Delete(int id)
@@ -30,12 +30,13 @@ namespace FitnessApp.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<FitnessClass> FindById(int id)
+        public FitnessClass FindById(int id)
         {
-            return await _context.FitnessClass.Include(f => f.FitnessClassType)
-                                            .Include(t => t.Instructor)
-                                            .Include(l => l.Location)
-                                            .SingleOrDefaultAsync(m => m.Id == id);
+            return _context.FitnessClass
+                .Include(f => f.FitnessClassType)
+                .Include(t => t.Instructor)
+                .Include(l => l.Location)
+                .SingleOrDefault(m => m.Id == id);
         }
 
         public async Task Insert(FitnessClass fitnessClass)
@@ -49,7 +50,7 @@ namespace FitnessApp.Repository
             await _context.SaveChangesAsync();
         }
 
-        public bool Find(int id) {
+        public bool FitnessClassExists(int id) {
             return _context.FitnessClass.Any(e => e.Id == id);
         }
     }

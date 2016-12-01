@@ -15,9 +15,9 @@ namespace FitnessApp.Logic
             _fitnessClassRepository = fitnessClassRepository;
         }
 
-        public async Task<FitnessClass> FindById(int id)
+        public FitnessClass FindById(int id)
         {
-            return await _fitnessClassRepository.FindById(id);
+            return _fitnessClassRepository.FindById(id);
         }
 
         public async Task<List<FitnessClass>> GetList()
@@ -44,7 +44,7 @@ namespace FitnessApp.Logic
 
         public bool FitnessClassExists(int id)
         {
-            return _fitnessClassRepository.Find(id);
+            return _fitnessClassRepository.FitnessClassExists(id);
         }
     }
 }
