@@ -24,9 +24,9 @@ namespace FitnessApp.Controllers
         }
 
         // GET: FitnessClasses/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var fitnessClass = await _fitnessClassLogic.FindById(id);
+            var fitnessClass = _fitnessClassLogic.FindById(id);
             if (fitnessClass == null)
             {
                 return NotFound();
@@ -57,9 +57,9 @@ namespace FitnessApp.Controllers
         //}
 
         // GET: FitnessClasses/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var fitnessClass = await _fitnessClassLogic.FindById(id);
+            var fitnessClass = _fitnessClassLogic.FindById(id);
 
             if (fitnessClass == null)
             {
