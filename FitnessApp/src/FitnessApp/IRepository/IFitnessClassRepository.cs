@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using ApplicationModels.FitnessApp.Models;
-using FitnessApp.Core;
 using System.Collections.Generic;
 
 namespace FitnessApp.IRepository
@@ -10,7 +9,7 @@ namespace FitnessApp.IRepository
         Task<List<FitnessClass>> All();
         Task Insert(FitnessClass fitnessClass);
         void Delete(int id);
-        Task<FitnessClass> FindById(int id);
-        bool Find(int id);
+        FitnessClass FindById(int id);
+        bool FitnessClassExists(int id);
     }
 }

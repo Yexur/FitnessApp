@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using FitnessApp.Logic;
 using ApplicationModels.FitnessApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace FitnessApp.Controllers
 {
@@ -22,9 +24,9 @@ namespace FitnessApp.Controllers
         }
 
         // GET: FitnessClasses/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var fitnessClass = await _fitnessClassLogic.FindById(id);
+            var fitnessClass = _fitnessClassLogic.FindById(id);
             if (fitnessClass == null)
             {
                 return NotFound();
@@ -55,9 +57,9 @@ namespace FitnessApp.Controllers
         //}
 
         // GET: FitnessClasses/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var fitnessClass = await _fitnessClassLogic.FindById(id);
+            var fitnessClass = _fitnessClassLogic.FindById(id);
 
             if (fitnessClass == null)
             {
@@ -127,5 +129,6 @@ namespace FitnessApp.Controllers
         //        await _context.SaveChangesAsync();
         //        return RedirectToAction("Index");
         //    }
+
     }
 }
