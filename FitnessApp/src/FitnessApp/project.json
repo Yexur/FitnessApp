@@ -40,7 +40,8 @@
     "Microsoft.NETCore.App": "1.1.0",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0",
     "Bootstrap.Datepicker": "1.6.4",
-    "System.Collections": "4.3.0"
+    "System.Collections": "4.3.0",
+    "angular-ui-grid": "3.2.9"
   },
 
   "tools": {

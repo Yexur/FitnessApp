@@ -1,4 +1,7 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="../app/app.js" />
+/// <reference path="../app/dataservice.js" />
+/// <reference path="../app/fitnessclass/fitnessclasscontroller.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
 /// <reference path="lib/jquery/dist/jquery.js" />
