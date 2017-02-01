@@ -6,7 +6,7 @@ namespace FitnessApp.IRepository
 {
     public interface IInstructorRepository
     {
-        Task<List<Instructor>> All();
+        List<Instructor> All();
         Task Insert(Instructor instructor);
         void Delete(int id);
         Instructor FindById(int id);

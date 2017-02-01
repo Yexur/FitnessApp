@@ -5,6 +5,7 @@ using ApplicationModels.FitnessApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using FitnessApp.Models.ApplicationViewModels;
 
 namespace FitnessApp.Controllers
 {
@@ -23,21 +24,10 @@ namespace FitnessApp.Controllers
             return View(await _fitnessClassLogic.GetList());
         }
 
-        // GET: FitnessClasses/Details/5
-        public IActionResult Details(int id)
-        {
-            var fitnessClass = _fitnessClassLogic.FindById(id);
-            if (fitnessClass == null)
-            {
-                return NotFound();
-            }
-            return View(fitnessClass);
-        }
-
         // GET: FitnessClasses/Create
         public IActionResult Create()
         {
-            return View();
+            return View(_fitnessClassLogic.Create());
         }
 
         // POST: FitnessClasses/Create
@@ -73,7 +63,11 @@ namespace FitnessApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Capacity,Created,DateOfClass,EndTime,StartTime,Status,Updated")] FitnessClass fitnessClass)
+        public async Task<IActionResult> Edit(
+            int id, 
+            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")] 
+            FitnessClassEditView fitnessClass
+        )
         {
             if (id != fitnessClass.Id)
             {

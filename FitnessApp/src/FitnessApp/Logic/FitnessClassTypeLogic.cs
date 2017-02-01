@@ -20,9 +20,9 @@ namespace FitnessApp.Logic
             return _fitnessClassTypeRepository.FindById(id);
         }
 
-        public async Task<List<FitnessClassType>> GetList()
+        public List<FitnessClassType> GetList()
         {
-            var fitnessClassesType = await _fitnessClassTypeRepository.All();
+            var fitnessClassesType = _fitnessClassTypeRepository.All();
 
             if (fitnessClassesType == null || !fitnessClassesType.Any())
             {

@@ -20,9 +20,9 @@ namespace FitnessApp.Logic
             return _instructorRepository.FindById(id);
         }
 
-        public async Task<List<Instructor>> GetList()
+        public List<Instructor> GetList()
         {
-            var instructors = await _instructorRepository.All();
+            var instructors = _instructorRepository.All();
 
             if (instructors == null || !instructors.Any())
             {

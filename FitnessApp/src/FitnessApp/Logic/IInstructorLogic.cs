@@ -7,7 +7,7 @@ namespace FitnessApp.Logic
     public interface IInstructorLogic
     {
         Instructor FindById(int id);
-        Task<List<Instructor>> GetList();
+        List<Instructor> GetList();
         Task Save(Instructor instructor);
         void Delete(int id);
     }

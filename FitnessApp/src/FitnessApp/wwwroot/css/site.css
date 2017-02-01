@@ -17,6 +17,10 @@ textarea {
     max-width: 280px;
 }
 
+select.form-control:not([size]):not([multiple]) {
+  height: 38px;
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
