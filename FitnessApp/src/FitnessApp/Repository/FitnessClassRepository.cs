@@ -42,9 +42,11 @@ namespace FitnessApp.Repository
         public async Task Insert(FitnessClass fitnessClass)
         {
             if (fitnessClass.Id > 0) {
+                fitnessClass.Updated = DateTime.Now;
                 _context.Update(fitnessClass); 
             }
             else {
+                fitnessClass.Created = DateTime.Now;
                 _context.Add(fitnessClass);
             }
             await _context.SaveChangesAsync();
@@ -52,6 +54,10 @@ namespace FitnessApp.Repository
 
         public bool FitnessClassExists(int id) {
             return _context.FitnessClass.Any(e => e.Id == id);
+        }
+
+        public void Dispose() {
+            _context.Dispose();
         }
     }
 }

@@ -4,7 +4,6 @@ using FitnessApp.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace FitnessApp.Repository
@@ -17,9 +16,9 @@ namespace FitnessApp.Repository
             _context = context;
         }
 
-        public async Task<List<FitnessClassType>> All()
+        public List<FitnessClassType> All()
         {
-            return await _context.FitnessClassType.ToListAsync();
+            return _context.FitnessClassType.ToList();
         }
 
         public void Delete(int id)
