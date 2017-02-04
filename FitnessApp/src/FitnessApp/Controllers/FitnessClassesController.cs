@@ -97,33 +97,26 @@ namespace FitnessApp.Controllers
             return View(fitnessClass);
         }
 
-        //    // GET: FitnessClasses/Delete/5
-        //    public async Task<IActionResult> Delete(int? id)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return NotFound();
-        //        }
+        // GET: FitnessClasses/Delete/5
+        public IActionResult Delete(int id)
+        {
+            var fitnessClass = _fitnessClassLogic.FindById(id);
 
-        //        var fitnessClass = await _context.FitnessClass.SingleOrDefaultAsync(m => m.Id == id);
-        //        if (fitnessClass == null)
-        //        {
-        //            return NotFound();
-        //        }
+            if (fitnessClass == null)
+            {
+                return NotFound();
+            }
+            return View(fitnessClass);
+        }
 
-        //        return View(fitnessClass);
-        //    }
-
-        //    // POST: FitnessClasses/Delete/5
-        //    [HttpPost, ActionName("Delete")]
-        //    [ValidateAntiForgeryToken]
-        //    public async Task<IActionResult> DeleteConfirmed(int id)
-        //    {
-        //        var fitnessClass = await _context.FitnessClass.SingleOrDefaultAsync(m => m.Id == id);
-        //        _context.FitnessClass.Remove(fitnessClass);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
+        // POST: FitnessClasses/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _fitnessClassLogic.Delete(id);
+            return RedirectToAction("Index");
+        }
 
     }
 }
