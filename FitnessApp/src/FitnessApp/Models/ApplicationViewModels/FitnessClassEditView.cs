@@ -29,16 +29,16 @@ namespace FitnessApp.Models.ApplicationViewModels
         [Display(Name = "Type of Class")]
         public FitnessClassType FitnessClassType { get; set; }
 
-        public ICollection<SelectListItem> FitnessClassTypes { get; set; }
+        
 
         [Display(Name = "Instructor")]
         public Instructor Instructor { get; set; }
 
-        public ICollection<SelectListItem> Instructors { get; set; }
+        
 
         [Display(Name = "Room")]
         public Location Location { get; set; }
 
-        public ICollection<SelectListItem> Locations { get; set; }
+        
     }
 }

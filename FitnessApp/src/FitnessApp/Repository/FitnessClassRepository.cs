@@ -49,6 +49,7 @@ namespace FitnessApp.Repository
             }
             else {
                 fitnessClass.Created = DateTime.Now;
+                fitnessClass.Updated = DateTime.Now;
                 _context.Add(fitnessClass);
             }
             await _context.SaveChangesAsync();

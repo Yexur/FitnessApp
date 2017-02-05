@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
+using AutoMapper;
 
 namespace FitnessApp.Logic
 {
@@ -43,7 +44,12 @@ namespace FitnessApp.Logic
         public FitnessClassEditView FindById(int id)
         {
             var fitnessClass = _fitnessClassRepository.FindById(id);
-            return MapToEditView(fitnessClass) ?? new FitnessClassEditView { };
+            var fitnessClassEditView = Mapper.Map<FitnessClassEditView>(fitnessClass);
+            fitnessClassEditView.FitnessClassTypes = GetFitnessClassTypes();
+            fitnessClassEditView.Instructors = GetInstructors();
+            fitnessClassEditView.Locations = GetLocations();
+            return fitnessClassEditView;
+            //return MapToEditView(fitnessClass) ?? new FitnessClassEditView { };
         }
 
         public async Task<List<FitnessClassView>> GetList()
@@ -55,12 +61,21 @@ namespace FitnessApp.Logic
                 return Enumerable.Empty<FitnessClassView>().ToList();
             }
 
-            return MapToView(fitnessClasses);
+            return Mapper.Map<List<FitnessClassView>>(fitnessClasses);
+
+            //return MapToView(fitnessClasses);
         }
 
         public async Task Save(FitnessClassEditView fitnessClassEditView)
         {
-            var fitnessClass = MapToModel(fitnessClassEditView);
+            //var fitnessClass = MapToModel(fitnessClassEditView);
+            var fitnessClass = Mapper.Map<FitnessClass>(fitnessClassEditView);
+            
+            //fitnessClass.FitnessClassType. = fitnessClassEditView.FitnessClassType;
+            
+            //fitnessClass.FitnessClassType_Id = fitnessClassEditView.FitnessClassType.Id;
+            //fitnessClass.Location_Id = fitnessClassEditView.Location.Id;
+            //fitnessClass.Instructor_Id = fitnessClassEditView.Instructor.Id;
             await _fitnessClassRepository.Insert(fitnessClass);
         }
 
@@ -84,7 +99,7 @@ namespace FitnessApp.Logic
                 StartTime = fitnessClassEditView.StartTime,
                 EndTime = fitnessClassEditView.EndTime,
                 FitnessClassType_Id = fitnessClassEditView.FitnessClassType.Id,
-                Instructors_Id = fitnessClassEditView.Instructor.Id,
+                Instructor_Id = fitnessClassEditView.Instructor.Id,
                 Location_Id = fitnessClassEditView.Location.Id,
                 Status = fitnessClassEditView.Status
             };
@@ -92,45 +107,45 @@ namespace FitnessApp.Logic
             return fitnessClass;
         }
 
-        private List<FitnessClassView> MapToView(List<FitnessClass> fitnessClasses)
-        {
-            var fitnessClassList = fitnessClasses.Select(x => new FitnessClassView()
-            {
-                Id = x.Id,
-                Capacity = x.Capacity,
-                DateOfClass = x.DateOfClass,
-                StartTime = x.StartTime,
-                EndTime = x.EndTime,
-                Status = x.Status,
-                FitnessClassType = x.FitnessClassType,
-                Instructor = x.Instructor,
-                Location = x.Location
-            });
+        //private List<FitnessClassView> MapToView(List<FitnessClass> fitnessClasses)
+        //{
+        //    var fitnessClassList = fitnessClasses.Select(x => new FitnessClassView()
+        //    {
+        //        Id = x.Id,
+        //        Capacity = x.Capacity,
+        //        DateOfClass = x.DateOfClass,
+        //        StartTime = x.StartTime,
+        //        EndTime = x.EndTime,
+        //        Status = x.Status,
+        //        FitnessClassType = x.FitnessClassType,
+        //        Instructor = x.Instructor,
+        //        Location = x.Location
+        //    });
 
-            return fitnessClassList.ToList();
-        }
+        //    return fitnessClassList.ToList();
+        //}
 
         //we need to implement a view model for the other tables and replace these ones
-        private FitnessClassEditView MapToEditView(FitnessClass fitnessClass)
-        {
-            var fitnessClassEditView = new FitnessClassEditView
-            {
-                Id = fitnessClass.Id,
-                Capacity = fitnessClass.Capacity,
-                DateOfClass = fitnessClass.DateOfClass,
-                StartTime = fitnessClass.StartTime,
-                EndTime = fitnessClass.EndTime,
-                FitnessClassType = fitnessClass.FitnessClassType,
-                Instructor = fitnessClass.Instructor,
-                Location = fitnessClass.Location,
-                Status = fitnessClass.Status,
-                FitnessClassTypes = GetFitnessClassTypes(),
-                Instructors = GetInstructors(),
-                Locations = GetLocations()
-            };
+        //private FitnessClassEditView MapToEditView(FitnessClass fitnessClass)
+        //{
+        //    var fitnessClassEditView = new FitnessClassEditView
+        //    {
+        //        Id = fitnessClass.Id,
+        //        Capacity = fitnessClass.Capacity,
+        //        DateOfClass = fitnessClass.DateOfClass,
+        //        StartTime = fitnessClass.StartTime,
+        //        EndTime = fitnessClass.EndTime,
+        //        FitnessClassType = fitnessClass.FitnessClassType,
+        //        Instructor = fitnessClass.Instructor,
+        //        Location = fitnessClass.Location,
+        //        Status = fitnessClass.Status,
+        //        FitnessClassTypes = GetFitnessClassTypes(),
+        //        Instructors = GetInstructors(),
+        //        Locations = GetLocations()
+        //    };
 
-            return fitnessClassEditView;
-        }
+        //    return fitnessClassEditView;
+        //}
 
         private ICollection<SelectListItem> GetLocations()
         {

@@ -11,6 +11,9 @@ using FitnessApp.Services;
 using FitnessApp.Logic;
 using FitnessApp.Repository;
 using FitnessApp.IRepository;
+using AutoMapper;
+using ApplicationModels.FitnessApp.Models;
+using FitnessApp.Models.ApplicationViewModels;
 
 namespace FitnessApp
 {
@@ -77,6 +80,24 @@ namespace FitnessApp
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<FitnessClass, FitnessClassEditView>().ReverseMap().
+                    ForMember(
+                        dest => dest.Instructor_Id, 
+                        opt => opt.MapFrom(src => src.Instructor.Id)
+                    ).
+                    ForMember(
+                        dest => dest.Location_Id,
+                        opt => opt.MapFrom(src => src.Location.Id)
+                    ).
+                    ForMember(
+                        dest => dest.FitnessClassType_Id,
+                        opt => opt.MapFrom(src => src.FitnessClassType.Id)
+                    );
+                config.CreateMap<FitnessClass, FitnessClassView>().ReverseMap();
+            });
 
             app.UseApplicationInsightsRequestTelemetry();
 
