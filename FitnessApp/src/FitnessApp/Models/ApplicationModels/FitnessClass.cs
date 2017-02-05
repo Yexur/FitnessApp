@@ -19,7 +19,7 @@ namespace ApplicationModels.FitnessApp.Models
         public int FitnessClassType_Id { get; set; }
         public FitnessClassType FitnessClassType { get; set; }
 
-        public int Instructors_Id { get; set; }
+        public int Instructor_Id { get; set; }
         public Instructor Instructor { get; set; }
 
         public int Location_Id { get; set; }
