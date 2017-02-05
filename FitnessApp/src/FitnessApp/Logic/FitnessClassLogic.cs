@@ -4,7 +4,6 @@ using FitnessApp.Models.ApplicationViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using AutoMapper;
@@ -31,9 +30,9 @@ namespace FitnessApp.Logic
             _locationLogic = locationLogic;
         }
 
-        public FitnessClassEditView Create()
+        public FitnessClassView Create()
         {
-            return new FitnessClassEditView
+            return new FitnessClassView
             {
                 FitnessClassTypes = GetFitnessClassTypes(),
                 Locations = GetLocations(),
@@ -41,15 +40,14 @@ namespace FitnessApp.Logic
             };
         }
 
-        public FitnessClassEditView FindById(int id)
+        public FitnessClassView FindById(int id)
         {
             var fitnessClass = _fitnessClassRepository.FindById(id);
-            var fitnessClassEditView = Mapper.Map<FitnessClassEditView>(fitnessClass);
-            fitnessClassEditView.FitnessClassTypes = GetFitnessClassTypes();
-            fitnessClassEditView.Instructors = GetInstructors();
-            fitnessClassEditView.Locations = GetLocations();
-            return fitnessClassEditView;
-            //return MapToEditView(fitnessClass) ?? new FitnessClassEditView { };
+            var fitnessClassView = Mapper.Map<FitnessClassView>(fitnessClass);
+            fitnessClassView.FitnessClassTypes = GetFitnessClassTypes();
+            fitnessClassView.Instructors = GetInstructors();
+            fitnessClassView.Locations = GetLocations();
+            return fitnessClassView;
         }
 
         public async Task<List<FitnessClassView>> GetList()
@@ -60,22 +58,12 @@ namespace FitnessApp.Logic
             {
                 return Enumerable.Empty<FitnessClassView>().ToList();
             }
-
             return Mapper.Map<List<FitnessClassView>>(fitnessClasses);
-
-            //return MapToView(fitnessClasses);
         }
 
-        public async Task Save(FitnessClassEditView fitnessClassEditView)
+        public async Task Save(FitnessClassView fitnessClassView)
         {
-            //var fitnessClass = MapToModel(fitnessClassEditView);
-            var fitnessClass = Mapper.Map<FitnessClass>(fitnessClassEditView);
-            
-            //fitnessClass.FitnessClassType. = fitnessClassEditView.FitnessClassType;
-            
-            //fitnessClass.FitnessClassType_Id = fitnessClassEditView.FitnessClassType.Id;
-            //fitnessClass.Location_Id = fitnessClassEditView.Location.Id;
-            //fitnessClass.Instructor_Id = fitnessClassEditView.Instructor.Id;
+            var fitnessClass = Mapper.Map<FitnessClass>(fitnessClassView);
             await _fitnessClassRepository.Insert(fitnessClass);
         }
 
@@ -89,63 +77,23 @@ namespace FitnessApp.Logic
             return _fitnessClassRepository.FitnessClassExists(id);
         }
 
-        private FitnessClass MapToModel(FitnessClassEditView fitnessClassEditView)
+        private List<FitnessClassView> MapToView(List<FitnessClass> fitnessClasses)
         {
-            var fitnessClass = new FitnessClass
+            var fitnessClassList = fitnessClasses.Select(x => new FitnessClassView()
             {
-                Id = fitnessClassEditView.Id,
-                Capacity = fitnessClassEditView.Capacity,
-                DateOfClass = fitnessClassEditView.DateOfClass,
-                StartTime = fitnessClassEditView.StartTime,
-                EndTime = fitnessClassEditView.EndTime,
-                FitnessClassType_Id = fitnessClassEditView.FitnessClassType.Id,
-                Instructor_Id = fitnessClassEditView.Instructor.Id,
-                Location_Id = fitnessClassEditView.Location.Id,
-                Status = fitnessClassEditView.Status
-            };
+                Id = x.Id,
+                Capacity = x.Capacity,
+                DateOfClass = x.DateOfClass,
+                StartTime = x.StartTime,
+                EndTime = x.EndTime,
+                Status = x.Status,
+                FitnessClassType = Mapper.Map<FitnessClassTypeView>(x.FitnessClassType),
+                Instructor = Mapper.Map<InstructorView>(x.Instructor),
+                Location= Mapper.Map< LocationView>(x.Location)
+            });
 
-            return fitnessClass;
+            return fitnessClassList.ToList();
         }
-
-        //private List<FitnessClassView> MapToView(List<FitnessClass> fitnessClasses)
-        //{
-        //    var fitnessClassList = fitnessClasses.Select(x => new FitnessClassView()
-        //    {
-        //        Id = x.Id,
-        //        Capacity = x.Capacity,
-        //        DateOfClass = x.DateOfClass,
-        //        StartTime = x.StartTime,
-        //        EndTime = x.EndTime,
-        //        Status = x.Status,
-        //        FitnessClassType = x.FitnessClassType,
-        //        Instructor = x.Instructor,
-        //        Location = x.Location
-        //    });
-
-        //    return fitnessClassList.ToList();
-        //}
-
-        //we need to implement a view model for the other tables and replace these ones
-        //private FitnessClassEditView MapToEditView(FitnessClass fitnessClass)
-        //{
-        //    var fitnessClassEditView = new FitnessClassEditView
-        //    {
-        //        Id = fitnessClass.Id,
-        //        Capacity = fitnessClass.Capacity,
-        //        DateOfClass = fitnessClass.DateOfClass,
-        //        StartTime = fitnessClass.StartTime,
-        //        EndTime = fitnessClass.EndTime,
-        //        FitnessClassType = fitnessClass.FitnessClassType,
-        //        Instructor = fitnessClass.Instructor,
-        //        Location = fitnessClass.Location,
-        //        Status = fitnessClass.Status,
-        //        FitnessClassTypes = GetFitnessClassTypes(),
-        //        Instructors = GetInstructors(),
-        //        Locations = GetLocations()
-        //    };
-
-        //    return fitnessClassEditView;
-        //}
 
         private ICollection<SelectListItem> GetLocations()
         {

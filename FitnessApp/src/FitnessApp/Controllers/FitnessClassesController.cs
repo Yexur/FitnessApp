@@ -1,10 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FitnessApp.Logic;
-using ApplicationModels.FitnessApp.Models;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using FitnessApp.Models.ApplicationViewModels;
 
 namespace FitnessApp.Controllers
@@ -37,7 +34,7 @@ namespace FitnessApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")]
-            FitnessClassEditView fitnessClass
+            FitnessClassView fitnessClass
         )
         {
             if (ModelState.IsValid)
@@ -68,7 +65,7 @@ namespace FitnessApp.Controllers
         public async Task<IActionResult> Edit(
             int id,
             [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")]
-            FitnessClassEditView fitnessClass
+            FitnessClassView fitnessClass
         )
         {
             if (id != fitnessClass.Id)

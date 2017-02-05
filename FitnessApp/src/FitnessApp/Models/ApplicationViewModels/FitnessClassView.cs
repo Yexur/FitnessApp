@@ -1,5 +1,4 @@
-﻿using ApplicationModels.FitnessApp.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,18 +25,18 @@ namespace FitnessApp.Models.ApplicationViewModels
         [Display(Name = "Capacity")]
         public int Capacity { get; set; }
 
-        [Display(Name = "Type of Class")]
-        public FitnessClassType FitnessClassType { get; set; }
+        [Display(Name = "Class Type")]
+        public FitnessClassTypeView FitnessClassType { get; set; }
 
         public ICollection<SelectListItem> FitnessClassTypes { get; set; }
 
         [Display(Name = "Instructor")]
-        public Instructor Instructor { get; set; }
+        public InstructorView Instructor { get; set; }
 
         public ICollection<SelectListItem> Instructors { get; set; }
 
         [Display(Name = "Room")]
-        public Location Location { get; set; }
+        public LocationView Location { get; set; }
 
         public ICollection<SelectListItem> Locations { get; set; }
     }
