@@ -89,13 +89,13 @@ namespace FitnessApp.Logic
                 Status = x.Status,
                 FitnessClassType = Mapper.Map<FitnessClassTypeView>(x.FitnessClassType),
                 Instructor = Mapper.Map<InstructorView>(x.Instructor),
-                Location= Mapper.Map< LocationView>(x.Location)
+                Location = Mapper.Map<LocationView>(x.Location)
             });
 
             return fitnessClassList.ToList();
         }
 
-        private ICollection<SelectListItem> GetLocations()
+        public ICollection<SelectListItem> GetLocations()
         {
             var locations = _locationLogic.GetList();
             var locationSelectList = locations.Select(x => new SelectListItem
@@ -106,7 +106,7 @@ namespace FitnessApp.Logic
             return BuildSelectListItems(locationSelectList);
         }
 
-        private ICollection<SelectListItem> GetInstructors()
+        public ICollection<SelectListItem> GetInstructors()
         {
             var instructors = _instructorLogic.GetList();
             var instructorSelectList = instructors.Select(x => new SelectListItem
@@ -117,7 +117,7 @@ namespace FitnessApp.Logic
             return BuildSelectListItems(instructorSelectList);
         }
 
-        private ICollection<SelectListItem> GetFitnessClassTypes()
+        public ICollection<SelectListItem> GetFitnessClassTypes()
         {
             var fitnessClassTypes = _fitnessClassTypeLogic.GetList();
             var fitnessClassTypesSelectList = fitnessClassTypes.Select(x => new SelectListItem

@@ -8,8 +8,8 @@ using FitnessApp.Data;
 namespace FitnessApp.Migrations
 {
     [DbContext(typeof(FitnessAppDbContext))]
-    [Migration("20170205020816_changedcolumnName")]
-    partial class changedcolumnName
+    [Migration("20170207185214_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
