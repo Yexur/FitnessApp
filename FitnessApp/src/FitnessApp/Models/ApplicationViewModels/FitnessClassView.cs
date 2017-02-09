@@ -11,7 +11,7 @@ namespace FitnessApp.Models.ApplicationViewModels
 
         [Display(Name = "Start Time")]
         [Required]
-        public StartTime { get; set; }
+        public string StartTime { get; set; }
 
         [Display(Name = "End Time")]
         [Required]
