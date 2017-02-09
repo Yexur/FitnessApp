@@ -90,6 +90,11 @@ namespace FitnessApp.Controllers
                     }
                 }
                 return RedirectToAction("Index");
+            } else
+            {
+                fitnessClass.Locations = _fitnessClassLogic.GetLocations();
+                fitnessClass.Instructors = _fitnessClassLogic.GetInstructors();
+                fitnessClass.FitnessClassTypes = _fitnessClassLogic.GetFitnessClassTypes();
             }
             return View(fitnessClass);
         }
