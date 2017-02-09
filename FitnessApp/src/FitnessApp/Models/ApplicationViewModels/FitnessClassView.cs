@@ -11,7 +11,7 @@ namespace FitnessApp.Models.ApplicationViewModels
 
         [Display(Name = "Start Time")]
         [Required]
-        public string StartTime { get; set; }
+        public StartTime { get; set; }
 
         [Display(Name = "End Time")]
         [Required]
@@ -28,8 +28,7 @@ namespace FitnessApp.Models.ApplicationViewModels
         [Required(ErrorMessage = "Pick a Capacity")]
         public int Capacity { get; set; }
 
-        [Display(Name = "Class Type")]
-        [Required(ErrorMessage = "This is required")]
+        [Display(Name = "I am from the fitness class view")]
         public FitnessClassTypeView FitnessClassType { get; set; }
 
         public ICollection<SelectListItem> FitnessClassTypes { get; set; }

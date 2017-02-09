@@ -77,24 +77,6 @@ namespace FitnessApp.Logic
             return _fitnessClassRepository.FitnessClassExists(id);
         }
 
-        private List<FitnessClassView> MapToView(List<FitnessClass> fitnessClasses)
-        {
-            var fitnessClassList = fitnessClasses.Select(x => new FitnessClassView()
-            {
-                Id = x.Id,
-                Capacity = x.Capacity,
-                DateOfClass = x.DateOfClass,
-                StartTime = x.StartTime,
-                EndTime = x.EndTime,
-                Status = x.Status,
-                FitnessClassType = Mapper.Map<FitnessClassTypeView>(x.FitnessClassType),
-                Instructor = Mapper.Map<InstructorView>(x.Instructor),
-                Location = Mapper.Map<LocationView>(x.Location)
-            });
-
-            return fitnessClassList.ToList();
-        }
-
         public ICollection<SelectListItem> GetLocations()
         {
             var locations = _locationLogic.GetList();
