@@ -21,6 +21,12 @@ namespace FitnessApp.Controllers
             return View(await _fitnessClassLogic.GetList());
         }
 
+        public async Task<IActionResult> Register()
+        {
+            return View(await _fitnessClassLogic.GetList());
+        }
+
+
         // GET: FitnessClasses/Create
         public IActionResult Create()
         {
