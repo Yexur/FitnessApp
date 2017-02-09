@@ -6,9 +6,9 @@ namespace ApplicationModels.FitnessApp.Models
 {
     public class FitnessClass : EntityBase
     {
-        public string StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
-        public string EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }
 
         public DateTime DateOfClass { get; set; }
 

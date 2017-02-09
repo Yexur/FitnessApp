@@ -41,6 +41,11 @@ namespace FitnessApp.Controllers
             {
                 await _fitnessClassLogic.Save(fitnessClass);
                 return RedirectToAction("Index");
+            } else
+            {
+                fitnessClass.FitnessClassTypes = _fitnessClassLogic.GetFitnessClassTypes();
+                fitnessClass.Locations = _fitnessClassLogic.GetLocations();
+                fitnessClass.Instructors = _fitnessClassLogic.GetInstructors();
             }
             return View(fitnessClass);
         }
@@ -119,6 +124,5 @@ namespace FitnessApp.Controllers
             _fitnessClassLogic.Delete(id);
             return RedirectToAction("Index");
         }
-
     }
 }
