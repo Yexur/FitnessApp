@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Fitness Classes</title>
-    @*@if (User.Identity.IsAuthenticated)*@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/bootswatch/united/bootstrap.css" />
@@ -21,8 +20,15 @@
 <body>
     <div id="sidebar">
         <ul class="nav">
-            <li class="active"><a asp-controller="FitnessClasses" asp-action="Index">Fitness Classes</a></li>
-            <li><a asp-controller="FitnessClasses" asp-action="Register">Register for a Class</a></li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("FitnessAppAdmin"))
+                {
+                    <li class="active"><a asp-controller="FitnessClasses" asp-action="Index">Fitness Classes</a></li>
+                }
+            //wrong controller fix when the new on is coded
+                <li><a asp-controller="FitnessClasses" asp-action="Register">Register for a Class</a></li>
+            }
             <li><a asp-controller="Home" asp-action="About">About</a></li>
             <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
         </ul>
@@ -30,7 +36,8 @@
     <div id="wrapper">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
-                <a asp-controller="FitnessClasses" asp-action="Index" class="navbar-brand">Fitness Classes</a>
+                @*this will bechanged to the classes the user has registered for when its built*@
+                <a asp-controller="FitnessClasses" asp-action="Register" class="navbar-brand">Registrations</a>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </nav>

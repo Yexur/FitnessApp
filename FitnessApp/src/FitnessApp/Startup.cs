@@ -59,6 +59,7 @@ namespace FitnessApp
                 {
                     config.User.RequireUniqueEmail = true;
                     config.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
+                    config.Cookies.ApplicationCookie.AccessDeniedPath = "/Home/Error";
 
                 })
                 .AddEntityFrameworkStores<FitnessAppDbContext>()
