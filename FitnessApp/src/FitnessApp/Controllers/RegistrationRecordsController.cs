@@ -7,16 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationModels.FitnessApp.Models;
 using FitnessApp.Data;
+using Microsoft.AspNetCore.Authorization;
+
+//create a new view model with the attending field
+//then we can pass this back to the controller
+//move this call to the registration controller
+//it can do the work of checking the attending and the number of people
+//registered
+//the view model will also calcualte the number of people already registered
+//if there is room we will create a registration record
+//add a view for the registration records that will have the ability to delete a registration via a check box
+//ask to confirm and then delete
+//later this will be filtered by the logedin user
+//the registration record needs to have an account id from the registration
+//need to add a id to the identiy table to hold the id of the user so we can add it to the registrations - do not need this
+// get the registration by e-mail
+//addd to the services to haVE A unique e-mail and get by the user name the registrations
+//use this to set the name of the registration as well
 
 namespace FitnessApp.Controllers
 {
+    [Authorize]
     public class RegistrationRecordsController : Controller
     {
         private readonly FitnessAppDbContext _context;
 
         public RegistrationRecordsController(FitnessAppDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: RegistrationRecords
@@ -108,8 +126,7 @@ namespace FitnessApp.Controllers
                     if (!RegistrationRecordExists(registrationRecord.Id))
                     {
                         return NotFound();
-                    }
-                    else
+                    } else
                     {
                         throw;
                     }

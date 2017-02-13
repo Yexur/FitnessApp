@@ -3,19 +3,30 @@ using Microsoft.AspNetCore.Mvc;
 using FitnessApp.Logic;
 using Microsoft.EntityFrameworkCore;
 using FitnessApp.Models.ApplicationViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using FitnessApp.Models;
 
 namespace FitnessApp.Controllers
 {
+    [Authorize]
     public class FitnessClassesController : Controller
     {
         private readonly IFitnessClassLogic _fitnessClassLogic;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public FitnessClassesController(IFitnessClassLogic fitnessClassLogic)
+        public FitnessClassesController(
+            IFitnessClassLogic fitnessClassLogic,
+            UserManager<ApplicationUser> userManager
+        )
         {
             _fitnessClassLogic = fitnessClassLogic;
+            _userManager = userManager;
         }
 
+        
         // GET: FitnessClasses
+        [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Index()
         {
             return View(await _fitnessClassLogic.GetList());
@@ -79,6 +90,11 @@ namespace FitnessApp.Controllers
             FitnessClassView fitnessClass
         )
         {
+            //use this in the controller to filter the registration recordds returned
+            //based on the username
+//noit actaullt needed here
+            var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
+
             if (id != fitnessClass.Id)
             {
                 return NotFound();

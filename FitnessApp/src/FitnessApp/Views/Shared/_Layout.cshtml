@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Fitness Classes</title>
-
+    @*@if (User.Identity.IsAuthenticated)*@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/bootswatch/united/bootstrap.css" />
@@ -44,7 +44,6 @@
                 <p class="text-center text-info">&copy; 2016 - Fitness Class Application</p>
             </footer>
         </div>
-    </div>
     </div>
 
     <environment names="Development">
