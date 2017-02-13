@@ -24,7 +24,7 @@ namespace FitnessApp.Controllers
             _userManager = userManager;
         }
 
-        
+
         // GET: FitnessClasses
         [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Index()
@@ -32,13 +32,15 @@ namespace FitnessApp.Controllers
             return View(await _fitnessClassLogic.GetList());
         }
 
+//this needs to be removed from here after we build the registrer controller- and it needs a better name
+//like saveFitnessClassRegistrations
         public async Task<IActionResult> Register()
         {
             return View(await _fitnessClassLogic.GetList());
         }
 
-
         // GET: FitnessClasses/Create
+        [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Create()
         {
             return View(_fitnessClassLogic.Create());
@@ -49,6 +51,7 @@ namespace FitnessApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Create(
             [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")]
             FitnessClassView fitnessClass
@@ -68,6 +71,7 @@ namespace FitnessApp.Controllers
         }
 
         // GET: FitnessClasses/Edit/5
+        [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Edit(int id)
         {
             var fitnessClass = _fitnessClassLogic.FindById(id);
@@ -84,17 +88,13 @@ namespace FitnessApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Edit(
             int id,
             [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")]
             FitnessClassView fitnessClass
         )
         {
-            //use this in the controller to filter the registration recordds returned
-            //based on the username
-//noit actaullt needed here
-            var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
-
             if (id != fitnessClass.Id)
             {
                 return NotFound();
@@ -127,6 +127,7 @@ namespace FitnessApp.Controllers
         }
 
         // GET: FitnessClasses/Delete/5
+        [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Delete(int id)
         {
             var fitnessClass = _fitnessClassLogic.FindById(id);
@@ -141,6 +142,7 @@ namespace FitnessApp.Controllers
         // POST: FitnessClasses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult DeleteConfirmed(int id)
         {
             _fitnessClassLogic.Delete(id);

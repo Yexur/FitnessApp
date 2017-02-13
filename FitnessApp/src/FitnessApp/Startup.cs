@@ -59,7 +59,7 @@ namespace FitnessApp
                 {
                     config.User.RequireUniqueEmail = true;
                     config.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
-                   
+
                 })
                 .AddEntityFrameworkStores<FitnessAppDbContext>()
                 .AddDefaultTokenProviders();

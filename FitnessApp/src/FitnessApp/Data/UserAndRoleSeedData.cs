@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FitnessApp.Data
@@ -12,7 +11,7 @@ namespace FitnessApp.Data
         private RoleManager<IdentityRole> _roleMgr;
         private UserManager<ApplicationUser> _userMgr;
         private readonly string defaultAdminUser = "shimojax@gmail.com";
-        private readonly string defaultUser = "shimojax+123.com";
+        private readonly string defaultUser = "shimojax+123@gmail.com";
         private readonly string adminRoleName = "FitnessAppAdmin";
         private readonly string userRoleName = "UserRole";
 
@@ -34,13 +33,6 @@ namespace FitnessApp.Data
                 if (!(await _roleMgr.RoleExistsAsync(adminRoleName)))
                 {
                     var adminRole = new IdentityRole(adminRoleName);
-                    adminRole.Claims.Add(
-                        new IdentityRoleClaim<string>() 
-                        { 
-                            ClaimType = "IsAdmin", 
-                            ClaimValue = "True" 
-                        }
-                    );
                     await _roleMgr.CreateAsync(adminRole);
                 }
 
@@ -52,9 +44,8 @@ namespace FitnessApp.Data
 
                 var adminUserResult = await _userMgr.CreateAsync(adminUser, "Test1234!");
                 var adminRoleResult = await _userMgr.AddToRoleAsync(adminUser, adminRoleName);
-                var adminClaimResult = await _userMgr.AddClaimAsync(adminUser, new Claim("AdminUser", "True"));
 
-                if (!adminUserResult.Succeeded || !adminRoleResult.Succeeded || !adminClaimResult.Succeeded)
+                if (!adminUserResult.Succeeded || !adminRoleResult.Succeeded)
                 {
                     throw new InvalidOperationException("Failed to build admin user and role");
                 }
@@ -67,13 +58,6 @@ namespace FitnessApp.Data
                 if (!(await _roleMgr.RoleExistsAsync(userRoleName)))
                 {
                     var userRole = new IdentityRole(userRoleName);
-                    userRole.Claims.Add(
-                        new IdentityRoleClaim<string>()
-                        {
-                            ClaimType = "IsUser",
-                            ClaimValue = "True"
-                        }
-                    );
                     await _roleMgr.CreateAsync(userRole);
                 }
 
@@ -85,9 +69,8 @@ namespace FitnessApp.Data
 
                 var userResult = await _userMgr.CreateAsync(user, "Test1234!");
                 var roleResult = await _userMgr.AddToRoleAsync(user, userRoleName);
-                var claimResult = await _userMgr.AddClaimAsync(user, new Claim("User", "True"));
 
-                if (!userResult.Succeeded || !roleResult.Succeeded || !claimResult.Succeeded)
+                if (!userResult.Succeeded || !roleResult.Succeeded)
                 {
                     throw new InvalidOperationException("Failed to build user and role");
                 }

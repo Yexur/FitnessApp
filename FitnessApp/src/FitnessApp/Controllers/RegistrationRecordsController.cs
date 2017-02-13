@@ -15,12 +15,10 @@ using Microsoft.AspNetCore.Authorization;
 //it can do the work of checking the attending and the number of people
 //registered
 //the view model will also calcualte the number of people already registered
-//if there is room we will create a registration record
+//if there is room in the fitness class we will create a registration record
 //add a view for the registration records that will have the ability to delete a registration via a check box
 //ask to confirm and then delete
 //later this will be filtered by the logedin user
-//the registration record needs to have an account id from the registration
-//need to add a id to the identiy table to hold the id of the user so we can add it to the registrations - do not need this
 // get the registration by e-mail
 //addd to the services to haVE A unique e-mail and get by the user name the registrations
 //use this to set the name of the registration as well
@@ -37,9 +35,14 @@ namespace FitnessApp.Controllers
             _context = context;
         }
 
+        //use this in the controller to filter the registration recordds returned
+        //based on the username
+        //noit actaullt needed here
+       // var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
         // GET: RegistrationRecords
         public async Task<IActionResult> Index()
         {
+            var userName = User.Identity.Name; //pass this to the controller
             var fitnessAppDbContext = _context.RegistrationRecord.Include(r => r.FitnessClass);
             return View(await fitnessAppDbContext.ToListAsync());
         }

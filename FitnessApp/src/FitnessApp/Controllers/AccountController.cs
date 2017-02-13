@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using FitnessApp.Models;
 using FitnessApp.Models.AccountViewModels;
 using FitnessApp.Services;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace FitnessApp.Controllers
 {
@@ -23,7 +20,6 @@ namespace FitnessApp.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
-        private readonly string adminRoleName = "FitnessAppAdmin";
         private readonly string userRoleName = "UserRole";
 
         public AccountController(
@@ -97,9 +93,6 @@ namespace FitnessApp.Controllers
             return View();
         }
 
-
-        //in here we will alsways just add to the default user role
-        //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
@@ -455,14 +448,7 @@ namespace FitnessApp.Controllers
 
         private IActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         #endregion

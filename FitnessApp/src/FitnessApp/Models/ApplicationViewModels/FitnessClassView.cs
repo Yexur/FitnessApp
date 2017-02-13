@@ -3,6 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+//need a new one of these for the registration
+//need to add in the capacity remaining 
+//addin the attending checkbox as well
+
 namespace FitnessApp.Models.ApplicationViewModels
 {
     public class FitnessClassView
