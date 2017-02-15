@@ -50,6 +50,7 @@ namespace FitnessApp.Repository
             else {
                 fitnessClass.Created = DateTime.Now;
                 fitnessClass.Updated = DateTime.Now;
+                fitnessClass.RemainingCapacity = fitnessClass.Capacity;
                 _context.Add(fitnessClass);
             }
             await _context.SaveChangesAsync();

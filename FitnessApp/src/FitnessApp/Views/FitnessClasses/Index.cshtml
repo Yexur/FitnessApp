@@ -28,6 +28,9 @@
                 @Html.DisplayNameFor(model => model.Capacity)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.RemainingCapacity)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Instructor.Name)
             </th>
             <th>
@@ -54,6 +57,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RemainingCapacity)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Instructor.Name)

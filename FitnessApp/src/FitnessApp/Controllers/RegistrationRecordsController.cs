@@ -9,20 +9,6 @@ using ApplicationModels.FitnessApp.Models;
 using FitnessApp.Data;
 using Microsoft.AspNetCore.Authorization;
 
-//create a new view model with the attending field
-//then we can pass this back to the controller
-//move this call to the registration controller
-//it can do the work of checking the attending and the number of people
-//registered
-//the view model will also calcualte the number of people already registered
-//if there is room in the fitness class we will create a registration record
-//add a view for the registration records that will have the ability to delete a registration via a check box
-//ask to confirm and then delete
-//later this will be filtered by the logedin user
-// get the registration by e-mail
-//addd to the services to haVE A unique e-mail and get by the user name the registrations
-//use this to set the name of the registration as well
-
 namespace FitnessApp.Controllers
 {
     [Authorize]
@@ -42,7 +28,7 @@ namespace FitnessApp.Controllers
         // GET: RegistrationRecords
         public async Task<IActionResult> Index()
         {
-            var userName = User.Identity.Name; //pass this to the controller
+            var userName = User.Identity.Name; //pass this to the logic side
             var fitnessAppDbContext = _context.RegistrationRecord.Include(r => r.FitnessClass);
             return View(await fitnessAppDbContext.ToListAsync());
         }

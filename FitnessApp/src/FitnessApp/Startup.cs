@@ -133,6 +133,7 @@ namespace FitnessApp
                     );
 
                 config.CreateMap<FitnessClass, FitnessClassView>();
+                config.CreateMap<FitnessClass, FitnessClassSignUpView>();
                 config.CreateMap<FitnessClassType, FitnessClassTypeView>().ReverseMap();
                 config.CreateMap<Instructor, InstructorView>().ReverseMap();
                 config.CreateMap<Location, LocationView>().ReverseMap();

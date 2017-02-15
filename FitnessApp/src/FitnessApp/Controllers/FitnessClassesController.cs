@@ -21,9 +21,8 @@ namespace FitnessApp.Controllers
         )
         {
             _fitnessClassLogic = fitnessClassLogic;
-            _userManager = userManager;
+            _userManager = userManager;  //this will be used during the save to get the username and add that to the request to save the registration
         }
-
 
         // GET: FitnessClasses
         [Authorize(Roles = "FitnessAppAdmin")]
@@ -32,11 +31,10 @@ namespace FitnessApp.Controllers
             return View(await _fitnessClassLogic.GetList());
         }
 
-//this needs to be removed from here after we build the registrer controller- and it needs a better name
-//like saveFitnessClassRegistrations
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> SignUp()
         {
-            return View(await _fitnessClassLogic.GetList());
+//this will just call the method - this will be a new method
+            return View(await _fitnessClassLogic.GetAvailableClasses());
         }
 
         // GET: FitnessClasses/Create

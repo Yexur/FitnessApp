@@ -1,7 +1,7 @@
-@model IEnumerable<FitnessApp.Models.ApplicationViewModels.FitnessClassView>
+@model IEnumerable<FitnessApp.Models.ApplicationViewModels.FitnessClassSignUpView>
 
 @{
-    ViewData["Title"] = "Available Classes";
+    ViewData["Title"] = "Sign up for a Class";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -24,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.DateOfClass)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Capacity)
+                @Html.DisplayNameFor(model => model.RemainingCapacity)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Instructor.Name)
@@ -33,7 +33,7 @@
                 @Html.DisplayNameFor(model => model.Location.Name)
             </th>
             <th>
-                <label class="col-md-2 control-label">Attending</label>
+                @Html.DisplayNameFor(model => model.Attending)
             </th>
         </tr>
     </thead>
@@ -54,7 +54,7 @@
                 @Html.DisplayFor(modelItem => item.DateOfClass)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
+                @Html.DisplayFor(modelItem => item.RemainingCapacity)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Instructor.Name)
@@ -64,7 +64,7 @@
             </td>
             <td>
                 <div class="col-md-10">
-                    <input type="checkbox"/>
+                    <input type="checkbox" @item.Attending/>
                 </div>
             </td>
         </tr>
@@ -72,5 +72,4 @@
     </tbody>
 </table>
 <div class="col-md-10">
-    <input type="submit" value="Save" class="btn btn-primary" />
 </div>
