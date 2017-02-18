@@ -25,6 +25,15 @@ namespace FitnessApp.Repository
                 .Include(l => l.Location).ToListAsync();
         }
 
+        public async Task<List<FitnessClass>> AllAvailable()
+        {
+            return await _context.FitnessClass
+                .Where(r => r.RemainingCapacity > 0 && r.Status == true)
+                .Include(f => f.FitnessClassType)
+                .Include(t => t.Instructor)
+                .Include(l => l.Location).ToListAsync();
+        }
+
         public void Delete(int id)
         {
             var fitnessClass = FindById(id);
@@ -43,11 +52,13 @@ namespace FitnessApp.Repository
 
         public async Task Insert(FitnessClass fitnessClass)
         {
-            if (fitnessClass.Id > 0) {
+//this logic will move to the fitness class logic class 
+            if (fitnessClass.Id > 0)
+            {
                 fitnessClass.Updated = DateTime.Now;
-                _context.Update(fitnessClass); 
-            }
-            else {
+                _context.Update(fitnessClass);
+            } else
+            {
                 fitnessClass.Created = DateTime.Now;
                 fitnessClass.Updated = DateTime.Now;
                 fitnessClass.RemainingCapacity = fitnessClass.Capacity;
@@ -56,11 +67,13 @@ namespace FitnessApp.Repository
             await _context.SaveChangesAsync();
         }
 
-        public bool FitnessClassExists(int id) {
+        public bool FitnessClassExists(int id)
+        {
             return _context.FitnessClass.Any(e => e.Id == id);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             _context.Dispose();
         }
     }

@@ -6,6 +6,7 @@ using FitnessApp.Models.ApplicationViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using FitnessApp.Models;
+using System.Collections.Generic;
 
 namespace FitnessApp.Controllers
 {
@@ -31,10 +32,24 @@ namespace FitnessApp.Controllers
             return View(await _fitnessClassLogic.GetList());
         }
 
+        // GET: Available FitnessClasses
         public async Task<IActionResult> SignUp()
         {
-//this will just call the method - this will be a new method
             return View(await _fitnessClassLogic.GetAvailableClasses());
+        }
+
+//make this async later
+        //POST: FitnessClasses/SignUp
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SignUp([Bind("Id, Attending")]List<FitnessClassSignUpView> fitnessClassSignUps)
+        {
+            foreach (var item in fitnessClassSignUps)
+            {
+                var i = item.Id;
+                var b = item.Attending;
+            }
+            return View();
         }
 
         // GET: FitnessClasses/Create

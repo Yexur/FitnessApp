@@ -91,6 +91,10 @@ namespace FitnessApp.Logic
 
         //we will use a new method that the registration logic can access to update the
         //fitness class capacity
+        //we will call a method on the regiustration repositorty that will retreive the
+//registrations by fitness id use that to calcualte the capacity.
+//we need to update that value prior to saving
+//if the id is greater than 0
         public async Task Save(FitnessClassView fitnessClassView)
         {
             var fitnessClass = Mapper.Map<FitnessClass>(fitnessClassView);
