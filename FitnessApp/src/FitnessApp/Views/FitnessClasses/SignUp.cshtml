@@ -8,69 +8,72 @@
 
 <p>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FitnessClassType.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfClass)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RemainingCapacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Attending)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FitnessClassType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfClass)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RemainingCapacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Instructor.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.Name)
-            </td>
-            <td>
-                <div class="col-md-10">
-                    <input type="checkbox" @item.Attending/>
-                </div>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
-<div class="col-md-10">
-    <input type="submit" value="Save Registrations" class="btn btn-primary" />
-</div>
+<form asp-action="SignUp">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FitnessClassType.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfClass)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RemainingCapacity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instructor.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Attending)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FitnessClassType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfClass)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RemainingCapacity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instructor.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.Name)
+                </td>
+                <td>
+                    <input type="checkbox"
+                           name="attendingSelected"
+                           value="@item.Id"
+                           @(Html.Raw(item.Attending ? "checked=\"checked\"" : "")) />
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <div class="col-md-10">
+        <input type="submit" value="Save Registrations" class="btn btn-primary" />
+    </div>
+</form>

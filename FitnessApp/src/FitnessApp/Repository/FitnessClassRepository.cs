@@ -25,6 +25,7 @@ namespace FitnessApp.Repository
                 .Include(l => l.Location).ToListAsync();
         }
 
+        //and filter the list by the class already signed up for
         public async Task<List<FitnessClass>> AllAvailable()
         {
             return await _context.FitnessClass
@@ -52,7 +53,7 @@ namespace FitnessApp.Repository
 
         public async Task Insert(FitnessClass fitnessClass)
         {
-//this logic will move to the fitness class logic class 
+            //this logic will move to the fitness class logic class 
             if (fitnessClass.Id > 0)
             {
                 fitnessClass.Updated = DateTime.Now;

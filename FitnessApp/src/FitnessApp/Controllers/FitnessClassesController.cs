@@ -38,18 +38,21 @@ namespace FitnessApp.Controllers
             return View(await _fitnessClassLogic.GetAvailableClasses());
         }
 
-//make this async later
         //POST: FitnessClasses/SignUp
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignUp([Bind("Id, Attending")]List<FitnessClassSignUpView> fitnessClassSignUps)
+        public async Task<IActionResult> SignUp(string[] attendingSelected)
         {
-            foreach (var item in fitnessClassSignUps)
+            foreach (var item in attendingSelected)
             {
-                var i = item.Id;
-                var b = item.Attending;
+                var i = item;
             }
-            return View();
+            //this will need to do several things after this
+                //save the registrations
+                //update the remaining capacity
+                //and filter the list by the class already signed up for
+                
+            return View(await _fitnessClassLogic.GetAvailableClasses());
         }
 
         // GET: FitnessClasses/Create
