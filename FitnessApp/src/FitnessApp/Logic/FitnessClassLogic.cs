@@ -8,22 +8,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using AutoMapper;
 
-
-//create a new view model with the attending field
-//then we can pass this back to the controller
-//move this call to the registration controller
-//it can do the work of checking the attending and the number of people
-//registered
-//the view model will also calcualte the number of people already registered
-//it will also only get the active classes
-//if there is room in the fitness class we will create a registration record
-//add a view for the registration records that will have the ability to delete a registration via a check box
-//ask to confirm and then delete
-//later this will be filtered by the logedin user
-// get the registration by e-mail
-//addd to the services to haVE A unique e-mail and get by the user name the registrations
-//use this to set the name of the registration as well
-
 namespace FitnessApp.Logic
 {
     public class FitnessClassLogic : IFitnessClassLogic
@@ -77,10 +61,9 @@ namespace FitnessApp.Logic
             return Mapper.Map<List<FitnessClassView>>(fitnessClasses);
         }
 
-        //this is not correct it needs to check on capacity and filter by active etc 
-        public async Task<List<FitnessClassSignUpView>> GetAvailableClasses()
+        public async Task<List<FitnessClassSignUpView>> GetAvailableClasses(string userName)
         {
-            var fitnessClasses = await _fitnessClassRepository.All();
+            var fitnessClasses = await _fitnessClassRepository.AllAvailable(userName);
 
             if (fitnessClasses == null || !fitnessClasses.Any())
             {
@@ -89,12 +72,6 @@ namespace FitnessApp.Logic
             return Mapper.Map<List<FitnessClassSignUpView>>(fitnessClasses);
         }
 
-        //we will use a new method that the registration logic can access to update the
-        //fitness class capacity
-        //we will call a method on the regiustration repositorty that will retreive the
-//registrations by fitness id use that to calcualte the capacity.
-//we need to update that value prior to saving
-//if the id is greater than 0
         public async Task Save(FitnessClassView fitnessClassView)
         {
             var fitnessClass = Mapper.Map<FitnessClass>(fitnessClassView);

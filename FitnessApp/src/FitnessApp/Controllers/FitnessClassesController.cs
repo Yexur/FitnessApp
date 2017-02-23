@@ -4,9 +4,7 @@ using FitnessApp.Logic;
 using Microsoft.EntityFrameworkCore;
 using FitnessApp.Models.ApplicationViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using FitnessApp.Models;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace FitnessApp.Controllers
 {
@@ -14,15 +12,14 @@ namespace FitnessApp.Controllers
     public class FitnessClassesController : Controller
     {
         private readonly IFitnessClassLogic _fitnessClassLogic;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IRegistrationRecordLogic _registrationRecordLogic;
 
         public FitnessClassesController(
             IFitnessClassLogic fitnessClassLogic,
-            UserManager<ApplicationUser> userManager
-        )
+            IRegistrationRecordLogic registrationRecordLogic)
         {
             _fitnessClassLogic = fitnessClassLogic;
-            _userManager = userManager;  //this will be used during the save to get the username and add that to the request to save the registration
+            _registrationRecordLogic = registrationRecordLogic;
         }
 
         // GET: FitnessClasses
@@ -35,7 +32,7 @@ namespace FitnessApp.Controllers
         // GET: Available FitnessClasses
         public async Task<IActionResult> SignUp()
         {
-            return View(await _fitnessClassLogic.GetAvailableClasses());
+            return View(await _fitnessClassLogic.GetAvailableClasses(User.Identity.Name));
         }
 
         //POST: FitnessClasses/SignUp
@@ -43,16 +40,17 @@ namespace FitnessApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignUp(string[] attendingSelected)
         {
-            foreach (var item in attendingSelected)
+            try
             {
-                var i = item;
+                var fitnessClassIds = attendingSelected.Select(int.Parse).ToArray();
+                await _registrationRecordLogic.SaveRange(fitnessClassIds, User.Identity.Name);
             }
-            //this will need to do several things after this
-                //save the registrations
-                //update the remaining capacity
-                //and filter the list by the class already signed up for
-                
-            return View(await _fitnessClassLogic.GetAvailableClasses());
+            catch (DbUpdateConcurrencyException) // need to change this to be less specific
+            {
+                throw;
+            }
+
+            return View(await _fitnessClassLogic.GetAvailableClasses(User.Identity.Name));
         }
 
         // GET: FitnessClasses/Create
@@ -122,7 +120,7 @@ namespace FitnessApp.Controllers
                 {
                     await _fitnessClassLogic.Save(fitnessClass);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException) // need to change this to be less specific
                 {
                     if (!_fitnessClassLogic.FitnessClassExists(fitnessClass.Id))
                     {

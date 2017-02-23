@@ -12,9 +12,14 @@ namespace FitnessApp.Repository
     public class FitnessClassRepository : IFitnessClassRepository
     {
         private FitnessAppDbContext _context;
-        public FitnessClassRepository(FitnessAppDbContext context)
+        private IRegistrationRecordRepository _registrationRecordRepository;
+
+        public FitnessClassRepository(
+            FitnessAppDbContext context,
+            IRegistrationRecordRepository registrationRecordRepository)
         {
             _context = context;
+            _registrationRecordRepository = registrationRecordRepository;
         }
 
         public async Task<List<FitnessClass>> All()
@@ -25,11 +30,21 @@ namespace FitnessApp.Repository
                 .Include(l => l.Location).ToListAsync();
         }
 
-        //and filter the list by the class already signed up for
-        public async Task<List<FitnessClass>> AllAvailable()
+        public async Task<List<FitnessClass>> AllAvailable(string userName)
         {
+            IEnumerable<int> fitnessClassIds = Enumerable.Empty<int>();
+            var registrationRecords = _registrationRecordRepository.FindByUserName(userName);
+
+            if (registrationRecords != null && registrationRecords.Any())
+            {
+                fitnessClassIds = registrationRecords.Select(reg => reg.FitnessClass_Id);
+            }
+
             return await _context.FitnessClass
-                .Where(r => r.RemainingCapacity > 0 && r.Status == true)
+                .Where(r => r.RemainingCapacity > 0 &&
+                    r.Status == true
+                    && !fitnessClassIds.Contains(r.Id)
+                )
                 .Include(f => f.FitnessClassType)
                 .Include(t => t.Instructor)
                 .Include(l => l.Location).ToListAsync();
@@ -53,7 +68,6 @@ namespace FitnessApp.Repository
 
         public async Task Insert(FitnessClass fitnessClass)
         {
-            //this logic will move to the fitness class logic class 
             if (fitnessClass.Id > 0)
             {
                 fitnessClass.Updated = DateTime.Now;
@@ -71,6 +85,19 @@ namespace FitnessApp.Repository
         public bool FitnessClassExists(int id)
         {
             return _context.FitnessClass.Any(e => e.Id == id);
+        }
+
+        public bool UpdateCapacity(int id)
+        {
+            var fitnessClass = FindById(id);
+            if (fitnessClass != null && fitnessClass.RemainingCapacity > 0)
+            {
+                fitnessClass.RemainingCapacity--;
+                _context.Update(fitnessClass);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public void Dispose()

@@ -10,7 +10,7 @@ namespace FitnessApp.Logic
         FitnessClassView FindById(int id);
         bool FitnessClassExists(int id);
         Task<List<FitnessClassView>> GetList();
-        Task<List<FitnessClassSignUpView>> GetAvailableClasses();
+        Task<List<FitnessClassSignUpView>> GetAvailableClasses(string userName);
         Task Save(FitnessClassView fitnessClass);
         void Delete(int id);
         FitnessClassView Create();

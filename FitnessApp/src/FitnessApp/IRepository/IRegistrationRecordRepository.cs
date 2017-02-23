@@ -6,9 +6,12 @@ namespace FitnessApp.IRepository
 {
     public interface IRegistrationRecordRepository
     {
-        List<RegistrationRecord> All();
+        Task<List<RegistrationRecord>> All();
         Task Insert(RegistrationRecord registrationRecord);
+        Task InsertRange(List<RegistrationRecord> registrationRecords);
         void Delete(int id);
+        void DeleteRange(int[] ids);
         RegistrationRecord FindById(int id);
+        List<RegistrationRecord> FindByUserName(string userName);
     }
 }

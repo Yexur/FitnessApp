@@ -79,11 +79,11 @@ namespace FitnessApp
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             //Repository Services
+            services.AddTransient<IRegistrationRecordRepository, RegistrationRecordRepository>();
             services.AddTransient<IFitnessClassRepository, FitnessClassRepository>();
             services.AddTransient<IFitnessClassTypeRepository, FitnessClassTypeRepository>();
             services.AddTransient<IInstructorRepository, InstructorRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<IRegistrationRecordRepository, RegistrationRecordRepository>();
 
             //Logic services
             services.AddTransient<IFitnessClassLogic, FitnessClassLogic>();
