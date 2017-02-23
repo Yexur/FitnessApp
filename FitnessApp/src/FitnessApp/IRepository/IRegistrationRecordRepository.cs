@@ -12,6 +12,6 @@ namespace FitnessApp.IRepository
         void Delete(int id);
         void DeleteRange(int[] ids);
         RegistrationRecord FindById(int id);
-        List<RegistrationRecord> FindByUserName(string userName);
+        Task<List<RegistrationRecord>> FindByUserName(string userName);
     }
 }

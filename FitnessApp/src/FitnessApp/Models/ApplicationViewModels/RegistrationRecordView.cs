@@ -6,19 +6,19 @@ namespace FitnessApp.Models.ApplicationViewModels
     {
         public int Id { get; set; }
 
+        [Display(Name = "")]
+        public string UserName { get; set; }
+
         public string Email { get; set; }
 
         [Display(Name = "On Wait List")]
         public bool WaitListed { get; set; }
 
-        public int FitnessClass_Id { get; set; }
-
         [Display(Name = "Remove Registration")]
         public bool DeleteRegistration { get; set; }
-
-        [Display(Name = "Fitness Classes")]
+         
+        public int FitnessClass_Id { get; set; }
+       
         public FitnessClassView FitnessClass { get; set; }
-
-
     }
 }

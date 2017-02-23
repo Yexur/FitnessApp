@@ -8,7 +8,7 @@ namespace FitnessApp.Logic
     {
         RegistrationRecordView Get(int id);
         Task<List<RegistrationRecordView>> GetList();
-        List<RegistrationRecordView> FindByUserName(string userName);
+        Task<List<FitnessClassRegistrationView>> FindByUserName(string userName);
         Task Save(RegistrationRecordView registrationRecord);
         Task SaveRange(int[] fitnessClassIds, string userName);
         void Delete(int id);

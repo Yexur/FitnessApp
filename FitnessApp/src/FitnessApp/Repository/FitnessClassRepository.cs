@@ -32,14 +32,7 @@ namespace FitnessApp.Repository
 
         public async Task<List<FitnessClass>> AllAvailable(string userName)
         {
-            IEnumerable<int> fitnessClassIds = Enumerable.Empty<int>();
-            var registrationRecords = _registrationRecordRepository.FindByUserName(userName);
-
-            if (registrationRecords != null && registrationRecords.Any())
-            {
-                fitnessClassIds = registrationRecords.Select(reg => reg.FitnessClass_Id);
-            }
-
+            IEnumerable<int> fitnessClassIds = await GetFitnessClassIdForRegistrations(userName);
             return await _context.FitnessClass
                 .Where(r => r.RemainingCapacity > 0 &&
                     r.Status == true
@@ -48,6 +41,17 @@ namespace FitnessApp.Repository
                 .Include(f => f.FitnessClassType)
                 .Include(t => t.Instructor)
                 .Include(l => l.Location).ToListAsync();
+        }
+
+        public async Task<List<FitnessClass>> RegistrationsByUserName(string userName)
+        {
+            IEnumerable<int> fitnessClassIds = await GetFitnessClassIdForRegistrations(userName);
+            return await _context.FitnessClass
+               .Where(r => fitnessClassIds.Contains(r.Id)
+               )
+               .Include(f => f.FitnessClassType)
+               .Include(t => t.Instructor)
+               .Include(l => l.Location).ToListAsync();
         }
 
         public void Delete(int id)
@@ -103,6 +107,19 @@ namespace FitnessApp.Repository
         public void Dispose()
         {
             _context.Dispose();
+        }
+
+        private async Task<IEnumerable<int>> GetFitnessClassIdForRegistrations(string userName)
+        {
+            IEnumerable<int> fitnessClassIds = Enumerable.Empty<int>();
+            var registrationRecords = await _registrationRecordRepository.FindByUserName(userName);
+
+            if (registrationRecords != null && registrationRecords.Any())
+            {
+                fitnessClassIds = registrationRecords.Select(reg => reg.FitnessClass_Id);
+            }
+
+            return fitnessClassIds;
         }
     }
 }

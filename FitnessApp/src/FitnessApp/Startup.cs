@@ -138,6 +138,7 @@ namespace FitnessApp
                 config.CreateMap<Instructor, InstructorView>().ReverseMap();
                 config.CreateMap<Location, LocationView>().ReverseMap();
                 config.CreateMap<RegistrationRecord, RegistrationRecordView>().ReverseMap();
+
             });
 
             app.UseApplicationInsightsRequestTelemetry();

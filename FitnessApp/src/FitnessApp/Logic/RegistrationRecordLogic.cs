@@ -38,10 +38,21 @@ namespace FitnessApp.Logic
             }
             return Mapper.Map<List<RegistrationRecordView>>(registrationRecords); ;
         }
-        public List<RegistrationRecordView> FindByUserName(string userName)
+        public async Task<List<FitnessClassRegistrationView>> FindByUserName(string userName)
         {
-            var registrationRecords = _registrationRecordRepository.FindByUserName(userName);
-            return Mapper.Map<List<RegistrationRecordView>>(registrationRecords);
+            var registrationRecords = await _registrationRecordRepository.FindByUserName(userName);
+            var fitnessClassRegistration =
+                await _fitnessClassRepository.RegistrationsByUserName(userName);
+
+            if (fitnessClassRegistration == null || registrationRecords == null)
+            {
+                return Enumerable.Empty<FitnessClassRegistrationView>().ToList();
+
+            }
+            return MapRegistrationsToFitnessClassRegistrationView(
+                fitnessClassRegistration,
+                registrationRecords
+            );
         }
 
         public async Task Save(RegistrationRecordView registrationRecordView)
@@ -82,6 +93,46 @@ namespace FitnessApp.Logic
         public void DeleteRange(int[] ids)
         {
             _registrationRecordRepository.DeleteRange(ids);
+        }
+
+        private List<FitnessClassRegistrationView> MapRegistrationsToFitnessClassRegistrationView(
+            List<FitnessClass> fitnessClassRegistration,
+            List<RegistrationRecord> registrationRecords
+        )
+        {
+            List<FitnessClassRegistrationView> registrationsListView =
+                new List<FitnessClassRegistrationView>();
+
+            foreach (var registration in registrationRecords)
+            {
+                var fitnessClass = FindFitnessClass(
+                    fitnessClassRegistration,
+                    registration.FitnessClass_Id
+                );
+
+                registrationsListView.Add(new FitnessClassRegistrationView
+                {
+                    DateOfClass = fitnessClass.DateOfClass,
+                    StartTime = fitnessClass.StartTime,
+                    EndTime = fitnessClass.EndTime,
+                    FitnessClassTypeName = fitnessClass.FitnessClassType.Name,
+                    InstructorName = fitnessClass.Instructor.Name,
+                    LocationName = fitnessClass.Location.Name,
+                    FitnessClass_Id = registration.FitnessClass_Id,
+                    RegistrationRecord_Id = registration.Id,
+                    WaitListed = registration.WaitListed
+                });
+            }
+
+            return registrationsListView;
+        }
+
+        private FitnessClass FindFitnessClass(
+            List<FitnessClass> fitnessClassRegistration,
+            int fitnessClassId
+        )
+        {
+            return fitnessClassRegistration.Find(f => f.Id == fitnessClassId);
         }
     }
 }

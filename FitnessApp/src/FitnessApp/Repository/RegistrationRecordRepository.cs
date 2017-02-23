@@ -21,10 +21,10 @@ namespace FitnessApp.Repository
             return await _context.RegistrationRecord.Include(f => f.FitnessClass).ToListAsync();
         }
 
-        public List<RegistrationRecord> FindByUserName(string userName)
+        public async Task<List<RegistrationRecord>> FindByUserName(string userName)
         {
-            return _context.RegistrationRecord.Where(r => r.UserName == userName)
-                    .Include(r => r.FitnessClass).ToList();
+            return await _context.RegistrationRecord.Where(r => r.UserName == userName)
+                    .Include(r => r.FitnessClass).ToListAsync();
         }
 
         public void Delete(int id)
