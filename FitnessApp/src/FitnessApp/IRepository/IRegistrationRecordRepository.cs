@@ -10,8 +10,9 @@ namespace FitnessApp.IRepository
         Task Insert(RegistrationRecord registrationRecord);
         Task InsertRange(List<RegistrationRecord> registrationRecords);
         void Delete(int id);
-        void DeleteRange(int[] ids);
+        void DeleteRange(List<RegistrationRecord> recordsToDelete);
         RegistrationRecord FindById(int id);
         Task<List<RegistrationRecord>> FindByUserName(string userName);
+        Task<List<RegistrationRecord>> FindByFitnessClassId(int fitnessClassId);
     }
 }

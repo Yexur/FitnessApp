@@ -13,6 +13,6 @@ namespace FitnessApp.IRepository
         void Delete(int id);
         FitnessClass FindById(int id);
         bool FitnessClassExists(int id);
-        bool UpdateCapacity(int id);
+        bool UpdateCapacity(int id, bool increaseRemainingCapacity);
     }
 }

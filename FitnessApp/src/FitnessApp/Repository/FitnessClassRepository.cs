@@ -74,6 +74,8 @@ namespace FitnessApp.Repository
         {
             if (fitnessClass.Id > 0)
             {
+                fitnessClass.RemainingCapacity =
+                    await CalculateRemainingCapacity(fitnessClass.Id, fitnessClass.Capacity);
                 fitnessClass.Updated = DateTime.Now;
                 _context.Update(fitnessClass);
             } else
@@ -91,15 +93,23 @@ namespace FitnessApp.Repository
             return _context.FitnessClass.Any(e => e.Id == id);
         }
 
-        public bool UpdateCapacity(int id)
+        public bool UpdateCapacity(int id, bool increaseRemainingCapacity)
         {
             var fitnessClass = FindById(id);
-            if (fitnessClass != null && fitnessClass.RemainingCapacity > 0)
+            if (fitnessClass != null)
             {
-                fitnessClass.RemainingCapacity--;
-                _context.Update(fitnessClass);
-                _context.SaveChanges();
-                return true;
+                fitnessClass.RemainingCapacity = AdjustRemainingCapacity(
+                    fitnessClass.Capacity,
+                    fitnessClass.RemainingCapacity,
+                    increaseRemainingCapacity
+                );
+
+                if (IsValidRemainingCapacity(fitnessClass.RemainingCapacity, fitnessClass.Capacity))
+                {
+                    _context.Update(fitnessClass);
+                    _context.SaveChanges();
+                    return true;
+                }
             }
             return false;
         }
@@ -107,6 +117,15 @@ namespace FitnessApp.Repository
         public void Dispose()
         {
             _context.Dispose();
+        }
+
+        private bool IsValidRemainingCapacity(int remainingCapacity, int capacity)
+        {
+            if (remainingCapacity > capacity || remainingCapacity < 0)
+            {
+                return false;
+            }
+            return true;
         }
 
         private async Task<IEnumerable<int>> GetFitnessClassIdForRegistrations(string userName)
@@ -120,6 +139,39 @@ namespace FitnessApp.Repository
             }
 
             return fitnessClassIds;
+        }
+
+        private int AdjustRemainingCapacity(
+            int capacity,
+            int remainingCapacity,
+            bool increaseRemainingCapacity
+        )
+        {
+            int adjustedCapacity = remainingCapacity;
+            if (increaseRemainingCapacity)
+            {
+                if (capacity > remainingCapacity)
+                {
+                    adjustedCapacity++;
+                }
+            } else
+            {
+                if (remainingCapacity > 0)
+                {
+                    adjustedCapacity--;
+                }
+            }
+            return adjustedCapacity;
+        }
+
+        private async Task<int> CalculateRemainingCapacity(int id, int capacity)
+        {
+            var registrationRecords = await _registrationRecordRepository.FindByFitnessClassId(id);
+            if (registrationRecords == null || !registrationRecords.Any())
+            {
+                return capacity;
+            }
+            return capacity - registrationRecords.Count();
         }
     }
 }

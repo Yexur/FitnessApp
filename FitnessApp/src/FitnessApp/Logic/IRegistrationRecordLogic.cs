@@ -12,6 +12,6 @@ namespace FitnessApp.Logic
         Task Save(RegistrationRecordView registrationRecord);
         Task SaveRange(int[] fitnessClassIds, string userName);
         void Delete(int id);
-        void DeleteRange(int[] ids);
+        void DeleteRange(int[] registrationRecordIds, string userName);
     }
 }

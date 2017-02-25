@@ -16,7 +16,6 @@ namespace FitnessApp.Controllers
     public class RegistrationRecordsController : Controller
     {
         private readonly IRegistrationRecordLogic _registrationRecordLogic;
-        private readonly IFitnessClassLogic _fitnessClassLogic;
 
         public RegistrationRecordsController(IRegistrationRecordLogic registrationRecordLogic)
         {
@@ -29,32 +28,23 @@ namespace FitnessApp.Controllers
             return View(await _registrationRecordLogic.FindByUserName(User.Identity.Name));
         }
 
-        // GET: RegistrationRecords/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //POST: RegistrationRecords/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegistrationIndex(string[] deleteSelected)
+        {
+            try
+            {
+                var registrationRecordIds = deleteSelected.Select(int.Parse).ToArray();
+                _registrationRecordLogic.DeleteRange(registrationRecordIds, User.Identity.Name);
+            }
+            catch (DbUpdateConcurrencyException) // need to change this to be less specific
+            {
+                throw;
+            }
 
-        //    var registrationRecord = await _context.RegistrationRecord.SingleOrDefaultAsync(m => m.Id == id);
-        //    if (registrationRecord == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(registrationRecord);
-        //}
-
-        //// POST: RegistrationRecords/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var registrationRecord = await _context.RegistrationRecord.SingleOrDefaultAsync(m => m.Id == id);
-        //    _context.RegistrationRecord.Remove(registrationRecord);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction("Index");
-        //}
+            return View(await _registrationRecordLogic.FindByUserName(User.Identity.Name));
+        }
     }
+
 }

@@ -24,7 +24,13 @@ namespace FitnessApp.Repository
         public async Task<List<RegistrationRecord>> FindByUserName(string userName)
         {
             return await _context.RegistrationRecord.Where(r => r.UserName == userName)
-                    .Include(r => r.FitnessClass).ToListAsync();
+                .Include(r => r.FitnessClass).ToListAsync();
+        }
+
+        public async Task<List<RegistrationRecord>> FindByFitnessClassId(int fitnessClassId)
+        {
+            return await _context.RegistrationRecord.Where(r => r.FitnessClass_Id == fitnessClassId)
+                .ToListAsync();
         }
 
         public void Delete(int id)
@@ -34,23 +40,10 @@ namespace FitnessApp.Repository
             _context.SaveChanges();
         }
 
-        public void DeleteRange(int[] ids)
+        public void DeleteRange(List<RegistrationRecord> recordsToDelete)
         {
-            List<RegistrationRecord> recordsToDelete = new List<RegistrationRecord>();
-            foreach (var id in ids)
-            {
-                var record = FindById(id);
-                if (record != null)
-                {
-                    recordsToDelete.Add(record);
-                }
-            }
-
-            if (recordsToDelete.Count() != 0)
-            {
-                _context.RemoveRange(recordsToDelete);
-                _context.SaveChanges();
-            }
+            _context.RemoveRange(recordsToDelete);
+            _context.SaveChanges();
         }
 
         public RegistrationRecord FindById(int id)

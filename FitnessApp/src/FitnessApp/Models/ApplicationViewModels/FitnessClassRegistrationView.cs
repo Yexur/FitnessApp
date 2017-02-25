@@ -5,8 +5,6 @@ namespace FitnessApp.Models.ApplicationViewModels
 {
     public class FitnessClassRegistrationView
     {
-        internal object fitnessClass;
-
         public int FitnessClass_Id { get; set; }
 
         public int RegistrationRecord_Id { get; set; }

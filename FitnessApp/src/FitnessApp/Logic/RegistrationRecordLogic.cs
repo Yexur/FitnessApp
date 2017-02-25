@@ -66,7 +66,7 @@ namespace FitnessApp.Logic
             List<RegistrationRecord> registrationRecords = new List<RegistrationRecord>();
             foreach (var fitnessClassId in fitnessClassIds)
             {
-                if (_fitnessClassRepository.UpdateCapacity(fitnessClassId))
+                if (_fitnessClassRepository.UpdateCapacity(fitnessClassId, false))
                 {
                     registrationRecords.Add(new RegistrationRecord
                     {
@@ -90,9 +90,31 @@ namespace FitnessApp.Logic
             _registrationRecordRepository.Delete(id);
         }
 
-        public void DeleteRange(int[] ids)
+        public void DeleteRange(int[] registrationRecordIds, string userName)
         {
-            _registrationRecordRepository.DeleteRange(ids);
+            List<RegistrationRecord> recordsToDelete = new List<RegistrationRecord>();
+            foreach (var id in registrationRecordIds)
+            {
+                var record = _registrationRecordRepository.FindById(id);
+                if (record != null)
+                {
+                    recordsToDelete.Add(record);
+                }
+            }
+
+            if (recordsToDelete.Count() != 0)
+            {
+                _registrationRecordRepository.DeleteRange(recordsToDelete);
+                UpdateFitnessClassCapacity(recordsToDelete);
+            }
+        }
+
+        private void UpdateFitnessClassCapacity(List<RegistrationRecord> recordsToDelete)
+        {
+            foreach (var record in recordsToDelete)
+            {
+                _fitnessClassRepository.UpdateCapacity(record.FitnessClass_Id, true);
+            }
         }
 
         private List<FitnessClassRegistrationView> MapRegistrationsToFitnessClassRegistrationView(
