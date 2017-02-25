@@ -14,13 +14,16 @@ using FitnessApp.IRepository;
 using AutoMapper;
 using ApplicationModels.FitnessApp.Models;
 using FitnessApp.Models.ApplicationViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessApp
 {
     public class Startup
     {
+        private IHostingEnvironment _env;
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -50,22 +53,37 @@ namespace FitnessApp
             var connection = @"Server=localhost\SQLEXPRESS;Database=FITNESS_APP;Integrated Security=True;MultipleActiveResultSets=True;";
             services.AddDbContext<FitnessAppDbContext>(options => options.UseSqlServer(connection));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddTransient<UserAndRoleSeedData>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+                {
+                    config.User.RequireUniqueEmail = true;
+                    config.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
+                    config.Cookies.ApplicationCookie.AccessDeniedPath = "/Home/Error";
+
+                })
                 .AddEntityFrameworkStores<FitnessAppDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddMvc(config =>
+            {
+                if (!_env.IsProduction())
+                {
+                    config.SslPort = 44349;
+                }
+                config.Filters.Add(new RequireHttpsAttribute());
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             //Repository Services
+            services.AddTransient<IRegistrationRecordRepository, RegistrationRecordRepository>();
             services.AddTransient<IFitnessClassRepository, FitnessClassRepository>();
             services.AddTransient<IFitnessClassTypeRepository, FitnessClassTypeRepository>();
             services.AddTransient<IInstructorRepository, InstructorRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<IRegistrationRecordRepository, RegistrationRecordRepository>();
 
             //Logic services
             services.AddTransient<IFitnessClassLogic, FitnessClassLogic>();
@@ -76,7 +94,12 @@ namespace FitnessApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(
+            IApplicationBuilder app,
+            IHostingEnvironment env,
+            ILoggerFactory loggerFactory,
+            UserAndRoleSeedData identitySeeder
+        )
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -110,10 +133,12 @@ namespace FitnessApp
                     );
 
                 config.CreateMap<FitnessClass, FitnessClassView>();
+                config.CreateMap<FitnessClass, FitnessClassSignUpView>();
                 config.CreateMap<FitnessClassType, FitnessClassTypeView>().ReverseMap();
                 config.CreateMap<Instructor, InstructorView>().ReverseMap();
                 config.CreateMap<Location, LocationView>().ReverseMap();
                 config.CreateMap<RegistrationRecord, RegistrationRecordView>().ReverseMap();
+
             });
 
             app.UseApplicationInsightsRequestTelemetry();
@@ -142,6 +167,8 @@ namespace FitnessApp
                     name: "default",
                     template: "{controller=FitnessClasses}/{action=Index}/{id?}");
             });
+
+            identitySeeder.Seed().Wait();
         }
     }
 }

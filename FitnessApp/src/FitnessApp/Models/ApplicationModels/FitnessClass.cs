@@ -16,6 +16,8 @@ namespace ApplicationModels.FitnessApp.Models
 
         public int Capacity { get; set; }
 
+        public int RemainingCapacity { get; set; }
+
         public int FitnessClassType_Id { get; set; }
         public FitnessClassType FitnessClassType { get; set; }
 

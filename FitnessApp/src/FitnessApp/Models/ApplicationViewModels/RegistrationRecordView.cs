@@ -6,18 +6,19 @@ namespace FitnessApp.Models.ApplicationViewModels
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Please enter your name")]
-        public string Name { get; set; }
+        [Display(Name = "")]
+        public string UserName { get; set; }
 
-        [Required(ErrorMessage = "Please enter your email address")]
         public string Email { get; set; }
 
         [Display(Name = "On Wait List")]
         public bool WaitListed { get; set; }
 
+        [Display(Name = "Remove Registration")]
+        public bool DeleteRegistration { get; set; }
+         
         public int FitnessClass_Id { get; set; }
-
-        [Display(Name = "Fitness Classes")]
+       
         public FitnessClassView FitnessClass { get; set; }
     }
 }

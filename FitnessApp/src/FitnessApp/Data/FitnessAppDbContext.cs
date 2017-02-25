@@ -32,7 +32,7 @@ namespace FitnessApp.Data
         private void RegistrationRecordsSchema(ModelBuilder builder)
         {
             builder.Entity<RegistrationRecord>()
-                .Property(r => r.Name)
+                .Property(r => r.UserName)
                 .IsRequired();
 
             builder.Entity<RegistrationRecord>()
