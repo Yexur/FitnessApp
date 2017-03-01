@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace FitnessApp.Migrations
 {
-    public partial class init : Migration
+    public partial class initdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -118,11 +118,12 @@ namespace FitnessApp.Migrations
                     Capacity = table.Column<int>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     DateOfClass = table.Column<DateTime>(nullable: false),
-                    EndTime = table.Column<string>(nullable: false),
+                    EndTime = table.Column<TimeSpan>(nullable: false),
                     FitnessClassType_Id = table.Column<int>(nullable: false),
                     Instructor_Id = table.Column<int>(nullable: false),
                     Location_Id = table.Column<int>(nullable: false),
-                    StartTime = table.Column<string>(nullable: false),
+                    RemainingCapacity = table.Column<int>(nullable: false),
+                    StartTime = table.Column<TimeSpan>(nullable: false),
                     Status = table.Column<bool>(nullable: false),
                     Updated = table.Column<DateTime>(nullable: false)
                 },
@@ -244,8 +245,8 @@ namespace FitnessApp.Migrations
                     Created = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     FitnessClass_Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
                     Updated = table.Column<DateTime>(nullable: false),
+                    UserName = table.Column<string>(nullable: false),
                     WaitListed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>

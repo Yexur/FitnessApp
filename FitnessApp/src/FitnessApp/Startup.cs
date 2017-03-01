@@ -50,8 +50,9 @@ namespace FitnessApp
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            var connection = @"Server=localhost\SQLEXPRESS;Database=FITNESS_APP;Integrated Security=True;MultipleActiveResultSets=True;";
-            services.AddDbContext<FitnessAppDbContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<FitnessAppDbContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("FitnessAppDatabase"))
+            );
 
             services.AddTransient<UserAndRoleSeedData>();
 

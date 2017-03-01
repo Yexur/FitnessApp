@@ -8,8 +8,8 @@ using FitnessApp.Data;
 namespace FitnessApp.Migrations
 {
     [DbContext(typeof(FitnessAppDbContext))]
-    [Migration("20170215041828_changeNameToUserNameRegistrations")]
-    partial class changeNameToUserNameRegistrations
+    [Migration("20170301202629_initdb")]
+    partial class initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,8 @@ namespace FitnessApp.Migrations
                     b.Property<int>("Instructor_Id");
 
                     b.Property<int>("Location_Id");
+
+                    b.Property<int>("RemainingCapacity");
 
                     b.Property<TimeSpan>("StartTime");
 
