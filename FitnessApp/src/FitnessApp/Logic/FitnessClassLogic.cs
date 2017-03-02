@@ -36,7 +36,7 @@ namespace FitnessApp.Logic
             {
                 FitnessClassTypes = await GetFitnessClassTypes(),
                 Locations = GetLocations(),
-                Instructors = GetInstructors()
+                Instructors = await GetInstructors()
             };
         }
 
@@ -45,7 +45,7 @@ namespace FitnessApp.Logic
             var fitnessClass = _fitnessClassRepository.FindById(id);
             var fitnessClassView = Mapper.Map<FitnessClassView>(fitnessClass);
             fitnessClassView.FitnessClassTypes = await GetFitnessClassTypes();
-            fitnessClassView.Instructors = GetInstructors();
+            fitnessClassView.Instructors = await GetInstructors();
             fitnessClassView.Locations = GetLocations();
             return fitnessClassView;
         }
@@ -99,9 +99,9 @@ namespace FitnessApp.Logic
             return BuildSelectListItems(locationSelectList);
         }
 
-        public ICollection<SelectListItem> GetInstructors()
+        public async Task<ICollection<SelectListItem>> GetInstructors()
         {
-            var instructors = _instructorLogic.GetList();
+            var instructors = await _instructorLogic.GetList();
             var instructorSelectList = instructors.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),

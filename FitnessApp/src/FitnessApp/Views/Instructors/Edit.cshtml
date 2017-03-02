@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Edit Fitness Class Type";
+    ViewData["Title"] = "Edit Instructor";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -7,7 +7,7 @@
     <div class="form-horizontal">
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @await Html.PartialAsync("_FitnessClassTypePartial")
+        @await Html.PartialAsync("_InstructorPartial")
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-primary" />

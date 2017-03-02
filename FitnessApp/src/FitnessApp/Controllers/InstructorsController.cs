@@ -1,91 +1,84 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 using FitnessApp.Logic;
 using FitnessApp.Models.ApplicationViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnessApp.Controllers
 {
     [Authorize]
-    public class FitnessClassTypesController : Controller
+    public class InstructorsController : Controller
     {
-        private readonly IFitnessClassTypeLogic _fitnessClassTypeLogic;
+        private readonly IInstructorLogic _instructorLogic;
 
-        public FitnessClassTypesController(IFitnessClassTypeLogic fitnessClassTypeLogic)
+        public InstructorsController(IInstructorLogic instructorLogic)
         {
-            _fitnessClassTypeLogic = fitnessClassTypeLogic;
+            _instructorLogic = instructorLogic;
         }
 
-        // GET: FitnessClassTypes
+        // GET: Instructors
         [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Index()
         {
-            return View(await _fitnessClassTypeLogic.GetList());
+            return View(await _instructorLogic.GetList());
         }
 
-        // GET: FitnessClassTypes/Create
+        // GET: Instructors/Create
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: FitnessClassTypes/Create
+        // POST: Instructors/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
-        public async Task<IActionResult> Create(
-            [Bind("Id, Name, Status")] FitnessClassTypeView fitnessClassType
-        )
+        public async Task<IActionResult> Create([Bind("Id, Name, Status")] InstructorView instructor)
         {
             if (ModelState.IsValid)
             {
-                await _fitnessClassTypeLogic.Save(fitnessClassType);
+                await _instructorLogic.Save(instructor);
                 return RedirectToAction("Index");
             }
-            return View(fitnessClassType);
+            return View(instructor);
         }
 
-        // GET: FitnessClassTypes/Edit/5
+        // GET: Instructors/Edit/5
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Edit(int id)
         {
-            var fitnessClassType = _fitnessClassTypeLogic.FindById(id);
-            if (fitnessClassType == null)
+            var instructor = _instructorLogic.FindById(id);
+            if (instructor == null)
             {
                 return NotFound();
             }
-            return View(fitnessClassType);
+            return View(instructor);
         }
 
-        // POST: FitnessClassTypes/Edit/5
+        // POST: Instructors/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Edit(
-            int id,
-            [Bind("Id,Name,Status")] FitnessClassTypeView fitnessClassType
+            int id, 
+            [Bind("Id, Name, Status")] InstructorView instructor
         )
         {
-            if (id != fitnessClassType.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _fitnessClassTypeLogic.Save(fitnessClassType);
+                    await _instructorLogic.Save(instructor);
                 }
-                catch (DbUpdateConcurrencyException) // need to change this to be less specific
+                catch (DbUpdateConcurrencyException)
                 {
-                    if (!_fitnessClassTypeLogic.FitnessClassTypeExists(fitnessClassType.Id))
+                    if (!_instructorLogic.InstructorExists(instructor.Id))
                     {
                         return NotFound();
                     } else
@@ -95,29 +88,29 @@ namespace FitnessApp.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(fitnessClassType);
+            return View(instructor);
         }
 
-        // GET: FitnessClassTypes/Delete/5
+        // GET: Instructors/Delete/5
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Delete(int id)
         {
-            var fitnessClassType = _fitnessClassTypeLogic.FindById(id);
-            if (fitnessClassType == null)
+            var instructor = _instructorLogic.FindById(id);
+            if (instructor == null)
             {
                 return NotFound();
             }
 
-            return View(fitnessClassType);
+            return View(instructor);
         }
 
-        // POST: FitnessClassTypes/Delete/5
+        // POST: Instructors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult DeleteConfirmed(int id)
         {
-            _fitnessClassTypeLogic.Delete(id);
+            _instructorLogic.Delete(id);
             return RedirectToAction("Index");
         }
     }

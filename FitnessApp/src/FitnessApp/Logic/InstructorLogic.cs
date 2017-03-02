@@ -23,9 +23,9 @@ namespace FitnessApp.Logic
             return Mapper.Map<InstructorView>(instructor);
         }
 
-        public List<InstructorView> GetList()
+        public async Task<List<InstructorView>> GetList()
         {
-            var instructors = _instructorRepository.All();
+            var instructors = await _instructorRepository.All();
 
             if (instructors == null || !instructors.Any())
             {
@@ -44,6 +44,11 @@ namespace FitnessApp.Logic
         public void Delete(int id)
         {
             _instructorRepository.Delete(id);
+        }
+
+        public bool InstructorExists(int id)
+        {
+            return _instructorRepository.InstructorExists(id);
         }
     }
 }

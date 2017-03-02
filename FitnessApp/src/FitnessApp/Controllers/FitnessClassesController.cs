@@ -79,7 +79,7 @@ namespace FitnessApp.Controllers
             {
                 fitnessClass.FitnessClassTypes = await _fitnessClassLogic.GetFitnessClassTypes();
                 fitnessClass.Locations = _fitnessClassLogic.GetLocations();
-                fitnessClass.Instructors = _fitnessClassLogic.GetInstructors();
+                fitnessClass.Instructors = await _fitnessClassLogic.GetInstructors();
             }
             return View(fitnessClass);
         }
@@ -134,7 +134,7 @@ namespace FitnessApp.Controllers
             } else
             {
                 fitnessClass.Locations = _fitnessClassLogic.GetLocations();
-                fitnessClass.Instructors = _fitnessClassLogic.GetInstructors();
+                fitnessClass.Instructors = await _fitnessClassLogic.GetInstructors();
                 fitnessClass.FitnessClassTypes = await _fitnessClassLogic.GetFitnessClassTypes();
             }
             return View(fitnessClass);
