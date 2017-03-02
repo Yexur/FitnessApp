@@ -23,13 +23,13 @@ namespace FitnessApp.Logic
             return Mapper.Map<FitnessClassTypeView>(fitnessClassType);
         }
 
-        public List<FitnessClassTypeView> GetList()
+        public async Task<List<FitnessClassTypeView>> GetList()
         {
-            var fitnessClassesTypes = _fitnessClassTypeRepository.All();
+            var fitnessClassesTypes = await _fitnessClassTypeRepository.All();
 
             if (fitnessClassesTypes == null || !fitnessClassesTypes.Any())
             {
-                return Enumerable.Empty<FitnessClassTypeView> ().ToList();
+                return Enumerable.Empty<FitnessClassTypeView>().ToList();
             }
             return Mapper.Map<List<FitnessClassTypeView>>(fitnessClassesTypes); ;
         }
@@ -43,6 +43,11 @@ namespace FitnessApp.Logic
         public void Delete(int id)
         {
             _fitnessClassTypeRepository.Delete(id);
+        }
+
+        public bool FitnessClassTypeExists(int id)
+        {
+            return _fitnessClassTypeRepository.FitnessClassTypeExists(id);
         }
     }
 }

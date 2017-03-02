@@ -30,21 +30,21 @@ namespace FitnessApp.Logic
             _locationLogic = locationLogic;
         }
 
-        public FitnessClassView Create()
+        public async Task<FitnessClassView> Create()
         {
             return new FitnessClassView
             {
-                FitnessClassTypes = GetFitnessClassTypes(),
+                FitnessClassTypes = await GetFitnessClassTypes(),
                 Locations = GetLocations(),
                 Instructors = GetInstructors()
             };
         }
 
-        public FitnessClassView FindById(int id)
+        public async Task<FitnessClassView> FindById(int id)
         {
             var fitnessClass = _fitnessClassRepository.FindById(id);
             var fitnessClassView = Mapper.Map<FitnessClassView>(fitnessClass);
-            fitnessClassView.FitnessClassTypes = GetFitnessClassTypes();
+            fitnessClassView.FitnessClassTypes = await GetFitnessClassTypes();
             fitnessClassView.Instructors = GetInstructors();
             fitnessClassView.Locations = GetLocations();
             return fitnessClassView;
@@ -110,10 +110,10 @@ namespace FitnessApp.Logic
             return BuildSelectListItems(instructorSelectList);
         }
 
-        public ICollection<SelectListItem> GetFitnessClassTypes()
+        public async Task<ICollection<SelectListItem>> GetFitnessClassTypes()
         {
-            var fitnessClassTypes = _fitnessClassTypeLogic.GetList();
-            var fitnessClassTypesSelectList = fitnessClassTypes.Select(x => new SelectListItem
+            var fitnessClassTypes = await _fitnessClassTypeLogic.GetList();
+            var fitnessClassTypesSelectList =  fitnessClassTypes.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
