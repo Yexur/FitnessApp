@@ -4,9 +4,10 @@ namespace FitnessApp.Models.ApplicationViewModels
 {
     public class InstructorView
     {
+        [Required(ErrorMessage = "Please supply a Instructor")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Please choose an Instructor")]
+        [Required(ErrorMessage = "Please supply an Instructor")]
         [Display(Name = "Instructor")]
         public string Name { get; set; }
 

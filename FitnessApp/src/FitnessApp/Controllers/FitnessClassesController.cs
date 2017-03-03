@@ -75,12 +75,7 @@ namespace FitnessApp.Controllers
             {
                 await _fitnessClassLogic.Save(fitnessClass);
                 return RedirectToAction("Index");
-            } else
-            {
-                fitnessClass.FitnessClassTypes = await _fitnessClassLogic.GetFitnessClassTypes();
-                fitnessClass.Locations = _fitnessClassLogic.GetLocations();
-                fitnessClass.Instructors = await _fitnessClassLogic.GetInstructors();
-            }
+            } 
             return View(fitnessClass);
         }
 
@@ -131,12 +126,7 @@ namespace FitnessApp.Controllers
                     }
                 }
                 return RedirectToAction("Index");
-            } else
-            {
-                fitnessClass.Locations = _fitnessClassLogic.GetLocations();
-                fitnessClass.Instructors = await _fitnessClassLogic.GetInstructors();
-                fitnessClass.FitnessClassTypes = await _fitnessClassLogic.GetFitnessClassTypes();
-            }
+            } 
             return View(fitnessClass);
         }
 

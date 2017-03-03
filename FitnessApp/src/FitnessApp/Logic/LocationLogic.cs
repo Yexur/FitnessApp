@@ -17,15 +17,15 @@ namespace FitnessApp.Logic
             _locationRepository = locationRepository;
         }
 
-        public LocationView Get(int id)
+        public LocationView FindById(int id)
         {
             var location = _locationRepository.FindById(id);
             return Mapper.Map<LocationView>(location);
         }
 
-        public List<LocationView> GetList()
+        public async Task<List<LocationView>> GetList()
         {
-            var locations = _locationRepository.All();
+            var locations = await _locationRepository.All();
 
             if (locations == null || !locations.Any())
             {
@@ -43,6 +43,11 @@ namespace FitnessApp.Logic
         public void Delete(int id)
         {
             _locationRepository.Delete(id);
+        }
+
+        public bool LocationExists(int id)
+        {
+            return _locationRepository.LocationExists(id);
         }
     }
 }

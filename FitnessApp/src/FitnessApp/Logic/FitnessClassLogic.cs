@@ -35,7 +35,7 @@ namespace FitnessApp.Logic
             return new FitnessClassView
             {
                 FitnessClassTypes = await GetFitnessClassTypes(),
-                Locations = GetLocations(),
+                Locations = await GetLocations(),
                 Instructors = await GetInstructors()
             };
         }
@@ -46,7 +46,7 @@ namespace FitnessApp.Logic
             var fitnessClassView = Mapper.Map<FitnessClassView>(fitnessClass);
             fitnessClassView.FitnessClassTypes = await GetFitnessClassTypes();
             fitnessClassView.Instructors = await GetInstructors();
-            fitnessClassView.Locations = GetLocations();
+            fitnessClassView.Locations = await GetLocations();
             return fitnessClassView;
         }
 
@@ -88,9 +88,10 @@ namespace FitnessApp.Logic
             return _fitnessClassRepository.FitnessClassExists(id);
         }
 
-        public ICollection<SelectListItem> GetLocations()
+//MS THESE NEED TO CHANGE TO GET ONLY THE ACTIVE ONES
+        public async Task<ICollection<SelectListItem>> GetLocations()
         {
-            var locations = _locationLogic.GetList();
+            var locations = await _locationLogic.GetList();
             var locationSelectList = locations.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
@@ -99,6 +100,7 @@ namespace FitnessApp.Logic
             return BuildSelectListItems(locationSelectList);
         }
 
+        //MS THESE NEED TO CHANGE TO GET ONLY THE ACTIVE ONES
         public async Task<ICollection<SelectListItem>> GetInstructors()
         {
             var instructors = await _instructorLogic.GetList();
@@ -110,6 +112,8 @@ namespace FitnessApp.Logic
             return BuildSelectListItems(instructorSelectList);
         }
 
+
+        //MS THESE NEED TO CHANGE TO GET ONLY THE ACTIVE ONES
         public async Task<ICollection<SelectListItem>> GetFitnessClassTypes()
         {
             var fitnessClassTypes = await _fitnessClassTypeLogic.GetList();

@@ -28,8 +28,8 @@ namespace FitnessApp.Models.ApplicationViewModels
         public bool Status { get; set; }
 
         [Display(Name = "Total Capacity")]
-        [Required(ErrorMessage = "Please choose a Capacity between 1 and 100")]
-        [Range(1, 100, ErrorMessage = "Please choose a Capacity between 1 and 100")]
+        [Required(ErrorMessage = "Please choose a Capacity between 1 and 15")]
+        [Range(1, 15, ErrorMessage = "Please choose a Capacity between 1 and 15")]
         public int Capacity { get; set; }
 
         [Display(Name = "Remaining Capacity")]

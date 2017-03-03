@@ -14,7 +14,7 @@ namespace FitnessApp.Logic
         Task Save(FitnessClassView fitnessClass);
         void Delete(int id);
         Task<FitnessClassView> Create();
-        ICollection<SelectListItem> GetLocations();
+        Task<ICollection<SelectListItem>> GetLocations();
         Task<ICollection<SelectListItem>> GetInstructors();
         Task<ICollection<SelectListItem>> GetFitnessClassTypes();
     }
