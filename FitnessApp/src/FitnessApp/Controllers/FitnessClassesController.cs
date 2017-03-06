@@ -67,8 +67,8 @@ namespace FitnessApp.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Create(
-            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassTypeId, Instructor, Location")]
-            FitnessClassView fitnessClass
+            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType_Id, Instructor_Id, Location_Id")]
+            FitnessClassEditView fitnessClass
         )
         {
             if (ModelState.IsValid)
@@ -86,9 +86,9 @@ namespace FitnessApp.Controllers
 
         // GET: FitnessClasses/Edit/5
         [Authorize(Roles = "FitnessAppAdmin")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var fitnessClass = _fitnessClassLogic.FindById(id);
+            var fitnessClass = await _fitnessClassLogic.FindById(id);
 
             if (fitnessClass == null)
             {
@@ -105,8 +105,8 @@ namespace FitnessApp.Controllers
         [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Edit(
             int id,
-            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")]
-            FitnessClassView fitnessClass
+            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType_Id, Instructor_Id, Location_Id")]
+            FitnessClassEditView fitnessClass
         )
         {
             if (id != fitnessClass.Id)
@@ -144,7 +144,7 @@ namespace FitnessApp.Controllers
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Delete(int id)
         {
-            var fitnessClass = _fitnessClassLogic.FindById(id);
+            var fitnessClass = _fitnessClassLogic.FindByIdForDelete(id);
 
             if (fitnessClass == null)
             {

@@ -7,13 +7,14 @@ namespace FitnessApp.Logic
 {
     public interface IFitnessClassLogic
     {
-        Task<FitnessClassView> FindById(int id);
+        Task<FitnessClassEditView> FindById(int id);
+        FitnessClassListView FindByIdForDelete(int id);
         bool FitnessClassExists(int id);
-        Task<List<FitnessClassView>> GetList();
+        Task<List<FitnessClassListView>> GetList();
         Task<List<FitnessClassSignUpView>> GetAvailableClasses(string userName);
-        Task Save(FitnessClassView fitnessClass);
+        Task Save(FitnessClassEditView fitnessClass);
         void Delete(int id);
-        Task<FitnessClassView> Create();
+        Task<FitnessClassEditView> Create();
         Task<ICollection<SelectListItem>> GetLocations();
         Task<ICollection<SelectListItem>> GetInstructors();
         Task<ICollection<SelectListItem>> GetFitnessClassTypes();

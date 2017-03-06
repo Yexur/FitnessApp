@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FitnessApp.Models.ApplicationViewModels
 {
-    public class FitnessClassView
+    public class FitnessClassBaseView
     {
         public int Id { get; set; }
 
@@ -34,21 +34,5 @@ namespace FitnessApp.Models.ApplicationViewModels
 
         [Display(Name = "Remaining Capacity")]
         public int RemainingCapacity { get; set; }
-
-        [Display(Name = "Fitness Class")]
-        [Required(ErrorMessage = "Please supply a Fitness Class")]
-        public int FitnessClassTypeId { get; set; }
-
-        public ICollection<SelectListItem> FitnessClassTypes { get; set; }
-
-        [Display(Name = "Instructor")]
-        public InstructorView Instructor { get; set; }
-
-        public ICollection<SelectListItem> Instructors { get; set; }
-
-        [Display(Name = "Room")]
-        public LocationView Location { get; set; }
-
-        public ICollection<SelectListItem> Locations { get; set; }
     }
 }

@@ -30,9 +30,9 @@ namespace FitnessApp.Logic
             _locationLogic = locationLogic;
         }
 
-        public async Task<FitnessClassView> Create()
+        public async Task<FitnessClassEditView> Create()
         {
-            return new FitnessClassView
+            return new FitnessClassEditView
             {
                 FitnessClassTypes = await GetFitnessClassTypes(),
                 Locations = await GetLocations(),
@@ -40,25 +40,31 @@ namespace FitnessApp.Logic
             };
         }
 
-        public async Task<FitnessClassView> FindById(int id)
+        public async Task<FitnessClassEditView> FindById(int id)
         {
             var fitnessClass = _fitnessClassRepository.FindById(id);
-            var fitnessClassView = Mapper.Map<FitnessClassView>(fitnessClass);
+            var fitnessClassView = Mapper.Map<FitnessClassEditView>(fitnessClass);
             fitnessClassView.FitnessClassTypes = await GetFitnessClassTypes();
             fitnessClassView.Instructors = await GetInstructors();
             fitnessClassView.Locations = await GetLocations();
             return fitnessClassView;
         }
 
-        public async Task<List<FitnessClassView>> GetList()
+        public FitnessClassListView FindByIdForDelete(int id) {
+            var fitnessClass = _fitnessClassRepository.FindById(id);
+            var fitnessClassView = Mapper.Map<FitnessClassListView>(fitnessClass);
+            return fitnessClassView;
+        }
+
+        public async Task<List<FitnessClassListView>> GetList()
         {
             var fitnessClasses = await _fitnessClassRepository.All();
 
             if (fitnessClasses == null || !fitnessClasses.Any())
             {
-                return Enumerable.Empty<FitnessClassView>().ToList();
+                return Enumerable.Empty<FitnessClassListView>().ToList();
             }
-            return Mapper.Map<List<FitnessClassView>>(fitnessClasses);
+            return Mapper.Map<List<FitnessClassListView>>(fitnessClasses);
         }
 
         public async Task<List<FitnessClassSignUpView>> GetAvailableClasses(string userName)
@@ -72,7 +78,7 @@ namespace FitnessApp.Logic
             return Mapper.Map<List<FitnessClassSignUpView>>(fitnessClasses);
         }
 
-        public async Task Save(FitnessClassView fitnessClassView)
+        public async Task Save(FitnessClassEditView fitnessClassView)
         {
             var fitnessClass = Mapper.Map<FitnessClass>(fitnessClassView);
             await _fitnessClassRepository.Insert(fitnessClass);

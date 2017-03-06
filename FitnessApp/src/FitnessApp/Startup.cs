@@ -107,19 +107,7 @@ namespace FitnessApp
 
             Mapper.Initialize(config =>
             {
-                config.CreateMap<FitnessClassView, FitnessClass>().
-                    ForMember(
-                        dest => dest.Instructor_Id,
-                        opt => opt.MapFrom(src => src.Instructor.Id)
-                    ).
-                    ForMember(
-                        dest => dest.Location_Id,
-                        opt => opt.MapFrom(src => src.Location.Id)
-                    ).
-                    ForMember(
-                        dest => dest.FitnessClassType_Id,
-                        opt => opt.MapFrom(src => src.FitnessClassType.Id)
-                    ).
+                config.CreateMap<FitnessClassEditView, FitnessClass>().
                     ForMember(
                         dest => dest.FitnessClassType,
                         opt => opt.Ignore()
@@ -133,7 +121,22 @@ namespace FitnessApp
                         opt => opt.Ignore()
                     );
 
-                config.CreateMap<FitnessClass, FitnessClassView>();
+                config.CreateMap<FitnessClassListView, FitnessClass>().
+                    ForMember(
+                        dest => dest.Instructor_Id,
+                        opt => opt.MapFrom(src => src.Instructor.Id)
+                    ).
+                    ForMember(
+                        dest => dest.Location_Id,
+                        opt => opt.MapFrom(src => src.Location.Id)
+                    ).
+                    ForMember(
+                        dest => dest.FitnessClassType_Id,
+                        opt => opt.MapFrom(src => src.FitnessClassType.Id)
+                    );
+
+                config.CreateMap<FitnessClass, FitnessClassEditView>();
+                config.CreateMap<FitnessClass, FitnessClassListView>();
                 config.CreateMap<FitnessClass, FitnessClassSignUpView>();
                 config.CreateMap<FitnessClassType, FitnessClassTypeView>().ReverseMap();
                 config.CreateMap<Instructor, InstructorView>().ReverseMap();
