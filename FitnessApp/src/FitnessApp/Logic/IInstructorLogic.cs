@@ -7,8 +7,9 @@ namespace FitnessApp.Logic
     public interface IInstructorLogic
     {
         InstructorView FindById(int id);
-        List<InstructorView> GetList();
+        Task<List<InstructorView>> GetList();
         Task Save(InstructorView instructor);
         void Delete(int id);
+        bool InstructorExists(int id);
     }
 }

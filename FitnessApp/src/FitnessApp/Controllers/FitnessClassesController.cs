@@ -55,9 +55,9 @@ namespace FitnessApp.Controllers
 
         // GET: FitnessClasses/Create
         [Authorize(Roles = "FitnessAppAdmin")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View(_fitnessClassLogic.Create());
+            return View(await _fitnessClassLogic.Create());
         }
 
         // POST: FitnessClasses/Create
@@ -67,8 +67,8 @@ namespace FitnessApp.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Create(
-            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")]
-            FitnessClassView fitnessClass
+            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType_Id, Instructor_Id, Location_Id")]
+            FitnessClassEditView fitnessClass
         )
         {
             if (ModelState.IsValid)
@@ -77,18 +77,18 @@ namespace FitnessApp.Controllers
                 return RedirectToAction("Index");
             } else
             {
-                fitnessClass.FitnessClassTypes = _fitnessClassLogic.GetFitnessClassTypes();
-                fitnessClass.Locations = _fitnessClassLogic.GetLocations();
-                fitnessClass.Instructors = _fitnessClassLogic.GetInstructors();
+                fitnessClass.FitnessClassTypes = await _fitnessClassLogic.GetFitnessClassTypes();
+                fitnessClass.Locations = await _fitnessClassLogic.GetLocations();
+                fitnessClass.Instructors = await _fitnessClassLogic.GetInstructors();
             }
             return View(fitnessClass);
         }
 
         // GET: FitnessClasses/Edit/5
         [Authorize(Roles = "FitnessAppAdmin")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var fitnessClass = _fitnessClassLogic.FindById(id);
+            var fitnessClass = await _fitnessClassLogic.FindById(id);
 
             if (fitnessClass == null)
             {
@@ -105,8 +105,8 @@ namespace FitnessApp.Controllers
         [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Edit(
             int id,
-            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")]
-            FitnessClassView fitnessClass
+            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType_Id, Instructor_Id, Location_Id")]
+            FitnessClassEditView fitnessClass
         )
         {
             if (id != fitnessClass.Id)
@@ -133,9 +133,9 @@ namespace FitnessApp.Controllers
                 return RedirectToAction("Index");
             } else
             {
-                fitnessClass.Locations = _fitnessClassLogic.GetLocations();
-                fitnessClass.Instructors = _fitnessClassLogic.GetInstructors();
-                fitnessClass.FitnessClassTypes = _fitnessClassLogic.GetFitnessClassTypes();
+                fitnessClass.FitnessClassTypes = await _fitnessClassLogic.GetFitnessClassTypes();
+                fitnessClass.Locations = await _fitnessClassLogic.GetLocations();
+                fitnessClass.Instructors = await _fitnessClassLogic.GetInstructors();
             }
             return View(fitnessClass);
         }
@@ -144,7 +144,7 @@ namespace FitnessApp.Controllers
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Delete(int id)
         {
-            var fitnessClass = _fitnessClassLogic.FindById(id);
+            var fitnessClass = _fitnessClassLogic.FindByIdForDelete(id);
 
             if (fitnessClass == null)
             {

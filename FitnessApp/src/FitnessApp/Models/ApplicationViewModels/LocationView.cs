@@ -4,9 +4,10 @@ namespace FitnessApp.Models.ApplicationViewModels
 {
     public class LocationView
     {
-        [Required(ErrorMessage = "Please choose a Location")]
+        [Required]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Please supply a Location")]
         [Display(Name = "Location")]
         public string Name { get; set; }
     }

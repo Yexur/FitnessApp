@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace FitnessApp.Repository
 {
@@ -36,14 +37,20 @@ namespace FitnessApp.Repository
         public void Delete(int id)
         {
             var registration = FindById(id);
-            _context.Remove(registration);
-            _context.SaveChanges();
+            if (registration != null)
+            {
+                _context.Remove(registration);
+                _context.SaveChanges();
+            }
         }
 
         public void DeleteRange(List<RegistrationRecord> recordsToDelete)
         {
-            _context.RemoveRange(recordsToDelete);
-            _context.SaveChanges();
+            if (recordsToDelete != null && recordsToDelete.Any())
+            {
+                _context.RemoveRange(recordsToDelete);
+                _context.SaveChanges();
+            }
         }
 
         public RegistrationRecord FindById(int id)
@@ -57,9 +64,12 @@ namespace FitnessApp.Repository
         {
             if (registrationRecord.Id > 0)
             {
+                registrationRecord.Updated = DateTime.Now;
                 _context.Update(registrationRecord);
             } else
             {
+                registrationRecord.Updated = DateTime.Now;
+                registrationRecord.Created = DateTime.Now;
                 _context.Add(registrationRecord);
             }
             await _context.SaveChangesAsync();

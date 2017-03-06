@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using FitnessApp.Models;
 using ApplicationModels.FitnessApp.Models;
+using System;
 
 namespace FitnessApp.Data
 {
@@ -67,7 +68,7 @@ namespace FitnessApp.Data
         {
             builder.Entity<FitnessClassType>()
                 .Property(r => r.Name)
-                .IsRequired();            
+                .IsRequired();
         }
 
         private void FitnessClassSchema(ModelBuilder builder)

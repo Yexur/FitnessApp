@@ -19,6 +19,6 @@ namespace FitnessApp.Models.ApplicationViewModels
          
         public int FitnessClass_Id { get; set; }
        
-        public FitnessClassView FitnessClass { get; set; }
+        public FitnessClassListView FitnessClass { get; set; }
     }
 }

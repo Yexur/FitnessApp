@@ -7,8 +7,9 @@ namespace FitnessApp.Logic
     public interface IFitnessClassTypeLogic
     {
         FitnessClassTypeView FindById(int id);
-        List<FitnessClassTypeView> GetList();
+        Task<List<FitnessClassTypeView>> GetList();
         Task Save(FitnessClassTypeView fitnessClassType);
+        bool FitnessClassTypeExists(int id);
         void Delete(int id);
     }
 }

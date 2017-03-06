@@ -30,35 +30,41 @@ namespace FitnessApp.Logic
             _locationLogic = locationLogic;
         }
 
-        public FitnessClassView Create()
+        public async Task<FitnessClassEditView> Create()
         {
-            return new FitnessClassView
+            return new FitnessClassEditView
             {
-                FitnessClassTypes = GetFitnessClassTypes(),
-                Locations = GetLocations(),
-                Instructors = GetInstructors()
+                FitnessClassTypes = await GetFitnessClassTypes(),
+                Locations = await GetLocations(),
+                Instructors = await GetInstructors()
             };
         }
 
-        public FitnessClassView FindById(int id)
+        public async Task<FitnessClassEditView> FindById(int id)
         {
             var fitnessClass = _fitnessClassRepository.FindById(id);
-            var fitnessClassView = Mapper.Map<FitnessClassView>(fitnessClass);
-            fitnessClassView.FitnessClassTypes = GetFitnessClassTypes();
-            fitnessClassView.Instructors = GetInstructors();
-            fitnessClassView.Locations = GetLocations();
+            var fitnessClassView = Mapper.Map<FitnessClassEditView>(fitnessClass);
+            fitnessClassView.FitnessClassTypes = await GetFitnessClassTypes();
+            fitnessClassView.Instructors = await GetInstructors();
+            fitnessClassView.Locations = await GetLocations();
             return fitnessClassView;
         }
 
-        public async Task<List<FitnessClassView>> GetList()
+        public FitnessClassListView FindByIdForDelete(int id) {
+            var fitnessClass = _fitnessClassRepository.FindById(id);
+            var fitnessClassView = Mapper.Map<FitnessClassListView>(fitnessClass);
+            return fitnessClassView;
+        }
+
+        public async Task<List<FitnessClassListView>> GetList()
         {
             var fitnessClasses = await _fitnessClassRepository.All();
 
             if (fitnessClasses == null || !fitnessClasses.Any())
             {
-                return Enumerable.Empty<FitnessClassView>().ToList();
+                return Enumerable.Empty<FitnessClassListView>().ToList();
             }
-            return Mapper.Map<List<FitnessClassView>>(fitnessClasses);
+            return Mapper.Map<List<FitnessClassListView>>(fitnessClasses);
         }
 
         public async Task<List<FitnessClassSignUpView>> GetAvailableClasses(string userName)
@@ -72,7 +78,7 @@ namespace FitnessApp.Logic
             return Mapper.Map<List<FitnessClassSignUpView>>(fitnessClasses);
         }
 
-        public async Task Save(FitnessClassView fitnessClassView)
+        public async Task Save(FitnessClassEditView fitnessClassView)
         {
             var fitnessClass = Mapper.Map<FitnessClass>(fitnessClassView);
             await _fitnessClassRepository.Insert(fitnessClass);
@@ -88,9 +94,10 @@ namespace FitnessApp.Logic
             return _fitnessClassRepository.FitnessClassExists(id);
         }
 
-        public ICollection<SelectListItem> GetLocations()
+//MS THESE NEED TO CHANGE TO GET ONLY THE ACTIVE ONES
+        public async Task<ICollection<SelectListItem>> GetLocations()
         {
-            var locations = _locationLogic.GetList();
+            var locations = await _locationLogic.GetList();
             var locationSelectList = locations.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
@@ -99,9 +106,10 @@ namespace FitnessApp.Logic
             return BuildSelectListItems(locationSelectList);
         }
 
-        public ICollection<SelectListItem> GetInstructors()
+        //MS THESE NEED TO CHANGE TO GET ONLY THE ACTIVE ONES
+        public async Task<ICollection<SelectListItem>> GetInstructors()
         {
-            var instructors = _instructorLogic.GetList();
+            var instructors = await _instructorLogic.GetList();
             var instructorSelectList = instructors.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
@@ -110,10 +118,12 @@ namespace FitnessApp.Logic
             return BuildSelectListItems(instructorSelectList);
         }
 
-        public ICollection<SelectListItem> GetFitnessClassTypes()
+
+        //MS THESE NEED TO CHANGE TO GET ONLY THE ACTIVE ONES
+        public async Task<ICollection<SelectListItem>> GetFitnessClassTypes()
         {
-            var fitnessClassTypes = _fitnessClassTypeLogic.GetList();
-            var fitnessClassTypesSelectList = fitnessClassTypes.Select(x => new SelectListItem
+            var fitnessClassTypes = await _fitnessClassTypeLogic.GetList();
+            var fitnessClassTypesSelectList =  fitnessClassTypes.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
