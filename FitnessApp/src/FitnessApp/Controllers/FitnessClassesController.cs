@@ -67,7 +67,7 @@ namespace FitnessApp.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
         public async Task<IActionResult> Create(
-            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassType, Instructor, Location")]
+            [Bind("Id, StartTime, EndTime, DateOfClass, Status, Capacity, FitnessClassTypeId, Instructor, Location")]
             FitnessClassView fitnessClass
         )
         {
@@ -78,7 +78,7 @@ namespace FitnessApp.Controllers
             } else
             {
                 fitnessClass.FitnessClassTypes = await _fitnessClassLogic.GetFitnessClassTypes();
-                fitnessClass.Locations = _fitnessClassLogic.GetLocations();
+                fitnessClass.Locations = await _fitnessClassLogic.GetLocations();
                 fitnessClass.Instructors = await _fitnessClassLogic.GetInstructors();
             }
             return View(fitnessClass);
@@ -134,7 +134,7 @@ namespace FitnessApp.Controllers
             } else
             {
                 fitnessClass.FitnessClassTypes = await _fitnessClassLogic.GetFitnessClassTypes();
-                fitnessClass.Locations = _fitnessClassLogic.GetLocations();
+                fitnessClass.Locations = await _fitnessClassLogic.GetLocations();
                 fitnessClass.Instructors = await _fitnessClassLogic.GetInstructors();
             }
             return View(fitnessClass);

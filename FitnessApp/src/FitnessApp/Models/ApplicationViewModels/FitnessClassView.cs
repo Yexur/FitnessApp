@@ -35,9 +35,9 @@ namespace FitnessApp.Models.ApplicationViewModels
         [Display(Name = "Remaining Capacity")]
         public int RemainingCapacity { get; set; }
 
-
         [Display(Name = "Fitness Class")]
-        public FitnessClassTypeView FitnessClassType { get; set; }
+        [Required(ErrorMessage = "Please supply a Fitness Class")]
+        public int FitnessClassTypeId { get; set; }
 
         public ICollection<SelectListItem> FitnessClassTypes { get; set; }
 

@@ -1,9 +1,9 @@
 ﻿@model FitnessApp.Models.ApplicationViewModels.FitnessClassView
 <div class="form-group">
-    <label asp-for="FitnessClassType" class="col-md-2 control-label"></label>
+    <label asp-for="FitnessClassTypeId" class="col-md-2 control-label"></label>
     <div class="col-md-10">
-        <select asp-for="FitnessClassType.Id" asp-items="Model.FitnessClassTypes" class="form-control"></select>
-        <span asp-validation-for="FitnessClassType.Id" class="text-danger"></span>
+        <select asp-for="FitnessClassTypeId" asp-items="Model.FitnessClassTypes" class="form-control"></select>
+        <span asp-validation-for="FitnessClassTypeId" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group">
