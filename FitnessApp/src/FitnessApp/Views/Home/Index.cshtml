@@ -1,18 +1,47 @@
-﻿@{
-    ViewData["Title"] = "Fitness Application";
+﻿@model IEnumerable<FitnessApp.Models.ApplicationViewModels.AnnouncementView>
+
+@{
+    ViewData["Title"] = "Fitness Class Registration";
 }
 
-<body>
-    <div class="container">
-        <div class="jumbotron">
-            <h1>@ViewData["Title"] </h1>
-            <p>
-                Register for a fitness class, view the available classes
-            </p>
-            <p>
-                or review classes you have signed up for
-            </p>
-        </div>
-    </div>
-</body>
+
+<h1>
+    @ViewData["Title"]
+</h1>
+
+<div class="jumbotron">
+    <h1>@ViewData["Title"] </h1>
+    <p>
+        Welcome to the Fitness Class Registration System. You can use this application to:
+    </p>
+    <ul>
+        <li>Register for a fitness class</li>
+        <li>View the available classes</li>
+        <li>Manage your class registrations</li>
+    </ul>
+</div>
+<table class="table">
+    <text class="h3">Announcements</text>
+
+    @foreach (var item in Model)
+    {
+        <tbody>
+            <tr>
+                <td>
+                    <b>@Html.DisplayFor(modelItem => item.Title)</b>
+                </td>
+                
+            </tr>
+            <tr>
+                <td class="pre-scrollable">
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+            </tr>
+        </tbody>
+    }
+</table>
+<br />
 <a class="btn btn-primary" asp-action="RegistrationIndex" asp-controller="RegistrationRecords">Your Registrations</a>
+
+
+

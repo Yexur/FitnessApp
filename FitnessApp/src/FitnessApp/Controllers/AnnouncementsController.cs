@@ -1,73 +1,77 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 using FitnessApp.Logic;
+using Microsoft.AspNetCore.Authorization;
 using FitnessApp.Models.ApplicationViewModels;
 
 namespace FitnessApp.Controllers
 {
     [Authorize]
-    public class LocationsController : Controller
+    public class AnnouncementsController : Controller
     {
-        private readonly ILocationLogic _locationLogic;
+        private readonly IAnnouncementLogic _announcementLogic;
 
-        public LocationsController(ILocationLogic locationLogic)
+        public AnnouncementsController(IAnnouncementLogic announcementLogic)
         {
-            _locationLogic = locationLogic;
+            _announcementLogic = announcementLogic;    
         }
 
-        // GET: Locations
-        [Authorize(Roles = "FitnessAppAdmin")]
+        // GET: Announcements
         public async Task<IActionResult> Index()
         {
-            return View(await _locationLogic.GetList());
+            return View(await _announcementLogic.GetList());
         }
 
-        // GET: Locations/Create
+        // GET: Announcements/Create
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Locations/Create
+        // POST: Announcements/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
-        public async Task<IActionResult> Create([Bind("Id, Name")] LocationView location)
+        public async Task<IActionResult> Create(
+            [Bind("Id, Comment, Title")] AnnouncementView announcement
+        )
         {
             if (ModelState.IsValid)
             {
-                await _locationLogic.Save(location);
+                await _announcementLogic.Save(announcement);                
                 return RedirectToAction("Index");
             }
-            return View(location);
+            return View(announcement);
         }
 
-        // GET: Locations/Edit/5
+        // GET: Announcements/Edit/5
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Edit(int id)
         {
-            var location = _locationLogic.FindById(id);
-            if (location == null)
+            var announcement = _announcementLogic.FindById(id);
+            if (announcement == null)
             {
                 return NotFound();
             }
-            return View(location);
+            return View(announcement);
         }
 
-        // POST: Locations/Edit/5
+        // POST: Announcements/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, Name ")] LocationView location)
+        public async Task<IActionResult> Edit(
+            int id, 
+            [Bind("Id, Comment, Title")] AnnouncementView announcement
+        )
         {
-            if (id != location.Id)
+            if (id != announcement.Id)
             {
                 return NotFound();
             }
@@ -76,43 +80,44 @@ namespace FitnessApp.Controllers
             {
                 try
                 {
-                    await _locationLogic.Save(location);
+                    await _announcementLogic.Save(announcement);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_locationLogic.LocationExists(location.Id))
+                    if (!_announcementLogic.AnnouncementExists(announcement.Id))
                     {
                         return NotFound();
-                    } else
+                    }
+                    else
                     {
                         throw;
                     }
                 }
                 return RedirectToAction("Index");
             }
-            return View(location);
+            return View(announcement);
         }
 
-        // GET: Locations/Delete/5
+        // GET: Announcements/Delete/5
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult Delete(int id)
         {
-            var location = _locationLogic.FindById(id);
-            if (location == null)
+            var announcement = _announcementLogic.FindById(id);
+            if (announcement == null)
             {
                 return NotFound();
             }
 
-            return View(location);
+            return View(announcement);
         }
 
-        // POST: Locations/Delete/5
+        // POST: Announcements/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "FitnessAppAdmin")]
         public IActionResult DeleteConfirmed(int id)
         {
-            _locationLogic.Delete(id);
+            _announcementLogic.Delete(id);
             return RedirectToAction("Index");
         }
     }

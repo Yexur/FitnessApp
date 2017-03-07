@@ -17,6 +17,11 @@ namespace FitnessApp.Controllers
             _registrationRecordLogic = registrationRecordLogic;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            return View(await _registrationRecordLogic.GetList());
+        }
+
         // GET: RegistrationRecords
         public async Task<IActionResult> RegistrationIndex()
         {
