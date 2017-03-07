@@ -3,7 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Fitness Classes</title>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("FitnessAppAdmin"))
+    {
+        ViewData["Title"] = "Adminstration";
+    } else
+    {
+        ViewData["Title"] = "Fitness Registration System";
+    }
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/bootswatch/united/bootstrap.css" />
@@ -39,11 +45,14 @@
                 <li class="active"><a asp-controller="FitnessClassTypes" asp-action="Index">Fitness Class Types</a></li>
                 <li class="active"><a asp-controller="Instructors" asp-action="Index">Instructors</a></li>
                 <li class="active"><a asp-controller="Locations" asp-action="Index">Locations</a></li>
+                <li class="active"><a asp-controller="Announcements" asp-action="Index">Announcements</a></li>
+                <li class="active"><a asp-controller="RegistrationRecords" asp-action="Index">User Registrations</a></li>
             }
         </ul>
     </div>
     <div id="wrapper">
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default">            
+            <a class="navbar-brand">@ViewData["Title"]</a>
             <div class="container-fluid">
                 @await Html.PartialAsync("_LoginPartial")
             </div>

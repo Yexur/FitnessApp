@@ -9,6 +9,9 @@ namespace FitnessApp.Models.ApplicationViewModels
 
         public int RegistrationRecord_Id { get; set; }
 
+        [Display(Name = "User")]
+        public string UserName { get;  set;}
+
         [Display(Name = "Start Time")]
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = @"{0:h\:mm}")]
         public TimeSpan StartTime { get; set; }

@@ -19,7 +19,10 @@ namespace FitnessApp.Repository
 
         public async Task<List<RegistrationRecord>> All()
         {
-            return await _context.RegistrationRecord.Include(f => f.FitnessClass).ToListAsync();
+            return await _context.RegistrationRecord
+                .Include(f => f.FitnessClass)
+                .OrderBy(f => f.Email)
+                .ToListAsync();
         }
 
         public async Task<List<RegistrationRecord>> FindByUserName(string userName)

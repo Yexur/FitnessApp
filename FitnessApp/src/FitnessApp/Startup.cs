@@ -85,6 +85,7 @@ namespace FitnessApp
             services.AddTransient<IFitnessClassTypeRepository, FitnessClassTypeRepository>();
             services.AddTransient<IInstructorRepository, InstructorRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
+            services.AddTransient<IAnnouncementRepository, AnnouncementRepository>();
 
             //Logic services
             services.AddTransient<IFitnessClassLogic, FitnessClassLogic>();
@@ -92,6 +93,7 @@ namespace FitnessApp
             services.AddTransient<IInstructorLogic, InstructorLogic>();
             services.AddTransient<ILocationLogic, LocationLogic>();
             services.AddTransient<IRegistrationRecordLogic, RegistrationRecordLogic>();
+            services.AddTransient<IAnnouncementLogic, AnnouncementLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -142,7 +144,7 @@ namespace FitnessApp
                 config.CreateMap<Instructor, InstructorView>().ReverseMap();
                 config.CreateMap<Location, LocationView>().ReverseMap();
                 config.CreateMap<RegistrationRecord, RegistrationRecordView>().ReverseMap();
-
+                config.CreateMap<Announcement, AnnouncementView>().ReverseMap();
             });
 
             app.UseApplicationInsightsRequestTelemetry();

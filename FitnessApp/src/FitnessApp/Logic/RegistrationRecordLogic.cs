@@ -28,16 +28,17 @@ namespace FitnessApp.Logic
             return Mapper.Map<RegistrationRecordView>(registrationRecord);
         }
 
-        public async Task<List<RegistrationRecordView>> GetList()
+        public async Task<List<FitnessClassRegistrationView>> GetList()
         {
             var registrationRecords = await _registrationRecordRepository.All();
 
             if (registrationRecords == null || !registrationRecords.Any())
             {
-                return Enumerable.Empty<RegistrationRecordView>().ToList();
+                return Enumerable.Empty<FitnessClassRegistrationView>().ToList();
             }
-            return Mapper.Map<List<RegistrationRecordView>>(registrationRecords); ;
+            return MapRegistrationsToFitnessClassRegistrationView(registrationRecords);
         }
+
         public async Task<List<FitnessClassRegistrationView>> FindByUserName(string userName)
         {
             var registrationRecords = await _registrationRecordRepository.FindByUserName(userName);
@@ -118,6 +119,25 @@ namespace FitnessApp.Logic
         }
 
         private List<FitnessClassRegistrationView> MapRegistrationsToFitnessClassRegistrationView(
+            List<RegistrationRecord> registrationRecords
+        )
+        {
+            List<FitnessClassRegistrationView> registrationsListView =
+                new List<FitnessClassRegistrationView>();
+
+            foreach (var registration in registrationRecords)
+            {
+                var fitnessClass = _fitnessClassRepository.FindById(registration.FitnessClass_Id);
+
+                registrationsListView.Add(
+                     AddFitnessClassRegistrationView(fitnessClass, registration)
+                 );
+            }
+
+            return registrationsListView;
+        }
+
+        private List<FitnessClassRegistrationView> MapRegistrationsToFitnessClassRegistrationView(
             List<FitnessClass> fitnessClassRegistration,
             List<RegistrationRecord> registrationRecords
         )
@@ -132,20 +152,10 @@ namespace FitnessApp.Logic
                     registration.FitnessClass_Id
                 );
 
-                registrationsListView.Add(new FitnessClassRegistrationView
-                {
-                    DateOfClass = fitnessClass.DateOfClass,
-                    StartTime = fitnessClass.StartTime,
-                    EndTime = fitnessClass.EndTime,
-                    FitnessClassTypeName = fitnessClass.FitnessClassType.Name,
-                    InstructorName = fitnessClass.Instructor.Name,
-                    LocationName = fitnessClass.Location.Name,
-                    FitnessClass_Id = registration.FitnessClass_Id,
-                    RegistrationRecord_Id = registration.Id,
-                    WaitListed = registration.WaitListed
-                });
+                registrationsListView.Add(
+                    AddFitnessClassRegistrationView(fitnessClass, registration)
+                );
             }
-
             return registrationsListView;
         }
 
@@ -155,6 +165,26 @@ namespace FitnessApp.Logic
         )
         {
             return fitnessClassRegistration.Find(f => f.Id == fitnessClassId);
+        }
+
+        private FitnessClassRegistrationView AddFitnessClassRegistrationView(
+            FitnessClass fitnessClass,
+            RegistrationRecord registrationRecord
+        )
+        {
+            return new FitnessClassRegistrationView
+            {
+                DateOfClass = fitnessClass.DateOfClass,
+                StartTime = fitnessClass.StartTime,
+                EndTime = fitnessClass.EndTime,
+                FitnessClassTypeName = fitnessClass.FitnessClassType.Name,
+                InstructorName = fitnessClass.Instructor.Name,
+                LocationName = fitnessClass.Location.Name,
+                FitnessClass_Id = registrationRecord.FitnessClass_Id,
+                RegistrationRecord_Id = registrationRecord.Id,
+                WaitListed = registrationRecord.WaitListed,
+                UserName = registrationRecord.UserName
+            };
         }
     }
 }
