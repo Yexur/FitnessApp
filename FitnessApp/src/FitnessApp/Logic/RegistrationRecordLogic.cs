@@ -56,6 +56,18 @@ namespace FitnessApp.Logic
             );
         }
 
+        public async Task<List<RegistrationRecordView>> FindByFitnessClassId(int fitnessClassId)
+        {
+            var registrationRecords =
+                await _registrationRecordRepository.FindByFitnessClassId(fitnessClassId);
+
+            if (registrationRecords == null || !registrationRecords.Any())
+            {
+                return Enumerable.Empty<RegistrationRecordView>().ToList();
+            }
+            return Mapper.Map<List<RegistrationRecordView>>(registrationRecords);
+        }
+
         public async Task Save(RegistrationRecordView registrationRecordView)
         {
             var registrationRecord = Mapper.Map<RegistrationRecord>(registrationRecordView);
@@ -118,7 +130,8 @@ namespace FitnessApp.Logic
             }
         }
 
-        private List<FitnessClassRegistrationView> MapRegistrationsToFitnessClassRegistrationView(
+        private List<FitnessClassRegistrationView> MapRegistrationsToFitnessClassRegistrationView
+        (
             List<RegistrationRecord> registrationRecords
         )
         {
@@ -137,7 +150,8 @@ namespace FitnessApp.Logic
             return registrationsListView;
         }
 
-        private List<FitnessClassRegistrationView> MapRegistrationsToFitnessClassRegistrationView(
+        private List<FitnessClassRegistrationView> MapRegistrationsToFitnessClassRegistrationView
+        (
             List<FitnessClass> fitnessClassRegistration,
             List<RegistrationRecord> registrationRecords
         )

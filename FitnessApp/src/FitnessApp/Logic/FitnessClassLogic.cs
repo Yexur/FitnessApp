@@ -67,6 +67,17 @@ namespace FitnessApp.Logic
             return Mapper.Map<List<FitnessClassListView>>(fitnessClasses);
         }
 
+        public async Task<List<FitnessClassListView>> GetFitnessClassWithRegistrations()
+        {
+            var fitnessClasses = await _fitnessClassRepository.AllFitnessClassWithRegistrations();
+
+            if (fitnessClasses == null || !fitnessClasses.Any())
+            {
+                return Enumerable.Empty<FitnessClassListView>().ToList();
+            }
+            return Mapper.Map<List<FitnessClassListView>>(fitnessClasses);
+        }
+
         public async Task<List<FitnessClassSignUpView>> GetAvailableClasses(string userName)
         {
             var fitnessClasses = await _fitnessClassRepository.AllAvailable(userName);

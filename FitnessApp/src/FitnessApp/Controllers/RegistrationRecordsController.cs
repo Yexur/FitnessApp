@@ -11,15 +11,26 @@ namespace FitnessApp.Controllers
     public class RegistrationRecordsController : Controller
     {
         private readonly IRegistrationRecordLogic _registrationRecordLogic;
+        private readonly IFitnessClassLogic _fitnessClassLogic;
 
-        public RegistrationRecordsController(IRegistrationRecordLogic registrationRecordLogic)
+        public RegistrationRecordsController(
+            IRegistrationRecordLogic registrationRecordLogic,
+            IFitnessClassLogic fitnessClassLogic
+        )
         {
             _registrationRecordLogic = registrationRecordLogic;
+            _fitnessClassLogic = fitnessClassLogic;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _registrationRecordLogic.GetList());
+            return View(await _fitnessClassLogic.GetFitnessClassWithRegistrations());
+        }
+
+        public async Task<IActionResult> RegistrationsByFitnessClass(int id)
+        {
+            var regs = await _registrationRecordLogic.FindByFitnessClassId(id);sdfsdf
+            return View(regs);
         }
 
         // GET: RegistrationRecords

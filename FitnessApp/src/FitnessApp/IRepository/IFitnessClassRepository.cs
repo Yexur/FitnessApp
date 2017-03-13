@@ -8,6 +8,7 @@ namespace FitnessApp.IRepository
     {
         Task<List<FitnessClass>> All();
         Task<List<FitnessClass>> AllAvailable(string userName);
+        Task<List<FitnessClass>> AllFitnessClassWithRegistrations();
         Task<List<FitnessClass>> RegistrationsByUserName(string userName);
         Task Insert(FitnessClass fitnessClass);
         void Delete(int id);

@@ -30,6 +30,14 @@ namespace FitnessApp.Repository
                 .Include(l => l.Location).ToListAsync();
         }
 
+        public async Task<List<FitnessClass>> AllFitnessClassWithRegistrations()
+        {
+            var fitnessClass = await All();
+            return fitnessClass.Where(
+                f => _context.RegistrationRecord.Select(reg => reg.FitnessClass_Id)
+                .Contains(f.Id)).ToList();
+        }
+
         public async Task<List<FitnessClass>> AllAvailable(string userName)
         {
             IEnumerable<int> fitnessClassIds = await GetFitnessClassIdForRegistrations(userName);
@@ -112,11 +120,6 @@ namespace FitnessApp.Repository
                 }
             }
             return false;
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
 
         private bool IsValidRemainingCapacity(int remainingCapacity, int capacity)
