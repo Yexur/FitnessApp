@@ -29,7 +29,7 @@ namespace FitnessApp.Controllers
 
         public async Task<IActionResult> RegistrationsByFitnessClass(int id)
         {
-            var regs = await _registrationRecordLogic.FindByFitnessClassId(id);sdfsdf
+            var regs = await _registrationRecordLogic.FindByFitnessClassId(id);
             return View(regs);
         }
 
