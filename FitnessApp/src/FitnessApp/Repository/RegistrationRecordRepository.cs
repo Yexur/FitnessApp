@@ -73,6 +73,7 @@ namespace FitnessApp.Repository
             {
                 registrationRecord.Updated = DateTime.Now;
                 registrationRecord.Created = DateTime.Now;
+                registrationRecord.Attended = false;
                 _context.Add(registrationRecord);
             }
             await _context.SaveChangesAsync();

@@ -18,7 +18,9 @@ namespace FitnessApp.Models.ApplicationViewModels
         public bool DeleteRegistration { get; set; }
          
         public int FitnessClass_Id { get; set; }
-       
+
+        public bool Attended { get; set; }
+
         public FitnessClassListView FitnessClass { get; set; }
     }
 }

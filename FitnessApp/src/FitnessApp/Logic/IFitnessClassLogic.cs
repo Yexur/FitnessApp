@@ -11,6 +11,7 @@ namespace FitnessApp.Logic
         FitnessClassListView FindByIdForDelete(int id);
         bool FitnessClassExists(int id);
         Task<List<FitnessClassListView>> GetList();
+        Task<List<FitnessClassListView>> GetFitnessClassWithRegistrations();
         Task<List<FitnessClassSignUpView>> GetAvailableClasses(string userName);
         Task Save(FitnessClassEditView fitnessClass);
         void Delete(int id);

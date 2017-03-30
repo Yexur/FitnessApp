@@ -1,7 +1,7 @@
-@model IEnumerable<FitnessApp.Models.ApplicationViewModels.FitnessClassRegistrationView>
+@model IEnumerable<FitnessApp.Models.ApplicationViewModels.FitnessClassListView>
 
 @{
-    ViewData["Title"] = "Users Registered for a Fitness Class";
+    ViewData["Title"] = "User Registerations";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -10,21 +10,14 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                @Html.DisplayNameFor(model => model.FitnessClassType.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FitnessClassTypeName)
+                @Html.DisplayNameFor(model => model.DateOfClass)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InstructorName)
+                @Html.DisplayNameFor(model => model.Instructor.Name)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LocationName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WaitListed)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,19 +25,13 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                <a class="url" asp-action="RegistrationsByFitnessClass" asp-route-id="@item.Id" asp-controller="RegistrationRecords">@item.FitnessClassType.Name</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FitnessClassTypeName)
+                @Html.DisplayFor(modelItem => item.DateOfClass)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InstructorName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LocationName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WaitListed)
+                @Html.DisplayFor(modelItem => item.Instructor.Name)
             </td>
         </tr>
         }

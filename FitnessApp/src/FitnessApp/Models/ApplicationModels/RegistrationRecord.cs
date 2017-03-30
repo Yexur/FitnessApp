@@ -8,6 +8,7 @@ namespace ApplicationModels.FitnessApp.Models
         public string Email { get; set; }
         public bool WaitListed { get; set; }
         public int FitnessClass_Id { get; set; }
+        public bool Attended { get; set; }
         public FitnessClass FitnessClass { get; set; }
     }
 }
